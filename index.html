@@ -389,7 +389,7 @@
 
       <section class="card">
         <h2>일별 순수익 / 1일 BEP 달성률</h2>
-        <div class="note">각 막대는 `자사몰 공헌이익 + 네이버 공헌이익 - 메타/네이버 광고비`입니다. 오른쪽 %는 그날의 BEP 순이익 목표 대비 달성률입니다.</div>
+        <div class="note">각 막대는 `자사몰 공헌이익 + 네이버 공헌이익 - Meta/Google Ads/Naver SearchAd 광고비`입니다. 오른쪽 %는 그날의 BEP 순이익 목표 대비 달성률입니다.</div>
         <div class="profit-bars" id="dailyProfitBars"></div>
       </section>
 
@@ -416,8 +416,8 @@
         </div>
         <div class="card">
           <div class="label">데이터 품질</div>
-          <div class="value good">D+1 CLOSED</div>
-          <div class="note">조회 월별 최신 폐장행까지만 노출합니다. 3월은 자사몰 품목 데이터가 일부 비어 있어 제품 표가 제한됩니다.</div>
+          <div class="value" id="dataQualityValue">D+1 CLOSED</div>
+          <div class="note" id="dataQualityCardNote">조회 월별 최신 폐장행까지만 노출합니다. 3월은 자사몰 품목 데이터가 일부 비어 있어 제품 표가 제한됩니다.</div>
         </div>
       </section>
 
@@ -451,9 +451,10 @@
         <div class="card">
           <h2>핵심 산식</h2>
           <pre class="sql">daily_net_profit =
-  payment_amount
-  - variable_cost
+  imweb_contribution
+  + naver_contribution
   - meta_ad_spend
+  - google_ads_spend
   - naver_searchad_spend
 
 mtd_achievement_rate =
@@ -472,15 +473,26 @@ mtd_achievement_rate =
   </main>
 
   <script>
-    const fixedCosts = [
-      ["인건비 (준호+세영+보미)", 11350046, 49.2],
-      ["금융 (대출이자)", 4000000, 17.3],
-      ["차량 (리스 3대)", 2414833, 10.5],
-      ["사무실 (마곡 임대+관리비)", 1600000, 6.9],
-      ["복지 (복리후생 카드비)", 1470000, 6.4],
-      ["전문서비스 (경리/노무/세무)", 1230000, 5.3],
-      ["AI 서비스", 1000000, 4.3]
-    ];
+    const fixedCostsByMonth = {
+      "2026-04": [
+        ["인건비 (준호+세영+보미)", 11350046, 49.2],
+        ["금융 (대출이자)", 4000000, 17.3],
+        ["차량 (리스 3대)", 2414833, 10.5],
+        ["사무실 (마곡 임대+관리비)", 1600000, 6.9],
+        ["복지 (복리후생 카드비)", 1470000, 6.4],
+        ["전문서비스 (경리/노무/세무)", 1230000, 5.3],
+        ["AI 서비스", 1000000, 4.3]
+      ],
+      "2026-05": [
+        ["인건비 (준호+보미)", 8180046, 41.5],
+        ["금융 (대출이자)", 4000000, 20.3],
+        ["차량 (리스 3대)", 2414833, 12.3],
+        ["사무실 (마곡 임대+관리비)", 1600000, 8.1],
+        ["복지 (복리후생 카드비)", 1270000, 6.4],
+        ["전문서비스 (경리/노무/세무)", 1230000, 6.2],
+        ["AI 서비스", 1000000, 5.1]
+      ]
+    };
     const variableCosts = [
       ["부가세", 10.0, "확정"],
       ["포장재비", 0.0, "확정"],
@@ -529,14 +541,14 @@ mtd_achievement_rate =
         daysInMonth: 30,
         fixedCost: 23064879,
         quality: "Supabase mart_daily_profit_gauge snapshot · API/fallback source shown per day",
-        closeNote: "4월 30일 데이터는 5월 6일에 별도 작업하며, 그전까지 4월 확정 손익에는 포함하지 않습니다."
+        closeNote: "4월 손익은 4월 30일까지의 폐장행 기준으로 확정 표시합니다."
       },
       "2026-05": {
         label: "2026년 5월",
         daysInMonth: 31,
         fixedCost: 19694879,
-        quality: "대기",
-        emptyState: "5월 데이터는 5월 1일부터 별도 월로 적재되며, 현재는 D+1 확정 행이 아직 없습니다.",
+        quality: "MISSING_NAVER 5일",
+        emptyState: "5월 데이터는 5월 1일부터 별도 월로 적재되며, 현재 최신 D+1 확정행은 5월 5일까지입니다.",
         closeNote: "5월 손익은 5월 1일부터 독립 월로 누적합니다. 4월 데이터와 합산하지 않습니다."
       }
     };
@@ -582,9 +594,16 @@ mtd_achievement_rate =
         { day: 26, revenue: 4812918, imweb: 1307747, naver: 584081.64, meta: 516741, googleAd: 64138, naverAd: 12976, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "OK" },
         { day: 27, revenue: 8671301, imweb: 2246189, naver: 1580872.08, meta: 608068, googleAd: 43048, naverAd: 10604, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
         { day: 28, revenue: 8483252, imweb: 2197565, naver: 823514.96, meta: 612347, googleAd: 35320, naverAd: 10034, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
-        { day: 29, revenue: 6496726, imweb: 1432026, naver: 922461.08, meta: 572854, googleAd: 34508, naverAd: 10330, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" }
+        { day: 29, revenue: 6496726, imweb: 1432026, naver: 922461.08, meta: 572854, googleAd: 34508, naverAd: 10330, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
+        { day: 30, revenue: 1995520, imweb: 811391, naver: 0, meta: 457304, googleAd: 36947, naverAd: 7005, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MISSING_NAVER" }
       ],
-      "2026-05": []
+      "2026-05": [
+        { day: 1, revenue: 1581444, imweb: 549207, naver: 0, meta: 501087, googleAd: 76586, naverAd: 10671, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MISSING_NAVER" },
+        { day: 2, revenue: 2011130, imweb: 925310, naver: 0, meta: 460939, googleAd: 47956, naverAd: 9111, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MISSING_NAVER" },
+        { day: 3, revenue: 1829900, imweb: 642469, naver: 0, meta: 598525, googleAd: 44204, naverAd: 5863, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MISSING_NAVER" },
+        { day: 4, revenue: 3322027, imweb: 1517356, naver: 0, meta: 554335, googleAd: 43950, naverAd: 10818, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MISSING_NAVER" },
+        { day: 5, revenue: 3910451, imweb: 1589781, naver: 0, meta: 602908, googleAd: 38750, naverAd: 16423, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MISSING_NAVER" }
+      ]
     };
     const categoryRowsByMonth = {
       "2026-03": [],
@@ -620,13 +639,16 @@ mtd_achievement_rate =
       ]
     };
 
-    document.getElementById("fixedBars").innerHTML = fixedCosts.map(([name, amount, share]) => `
-      <div class="bar-row">
-        <div>${name}</div>
-        <div class="track"><div class="fill" style="width:${share}%"></div></div>
-        <div>${won(amount)} <span class="note">${share.toFixed(1)}%</span></div>
-      </div>
-    `).join("");
+    function renderFixedBars(monthKey) {
+      const rows = fixedCostsByMonth[monthKey] || fixedCostsByMonth["2026-05"] || fixedCostsByMonth["2026-04"] || [];
+      document.getElementById("fixedBars").innerHTML = rows.map(([name, amount, share]) => `
+        <div class="bar-row">
+          <div>${name}</div>
+          <div class="track"><div class="fill" style="width:${share}%"></div></div>
+          <div>${won(amount)} <span class="note">${share.toFixed(1)}%</span></div>
+        </div>
+      `).join("");
+    }
 
     document.getElementById("varRows").innerHTML = variableCosts.map(([name, rate, status]) => `
       <tr>
@@ -794,6 +816,7 @@ mtd_achievement_rate =
       }
       const prevDay = Math.min(queryDay, prevMeta.defaultDay);
       const prev = summarizeRows(prevKey, prevDay);
+      const prevFixedCost = prevMeta.fixedCost || fixedCost;
       if (!prev.rows.length) {
         document.getElementById("compareGrid").innerHTML = `<div class="note">${prevMeta.label}의 비교 데이터가 아직 없습니다.</div>`;
         document.getElementById("compareNote").textContent = `${currentMeta.label}과 비교할 직전 월 확정 데이터가 없습니다.`;
@@ -804,7 +827,7 @@ mtd_achievement_rate =
         ["총 공헌이익", current.commerceContribution, prev.commerceContribution],
         ["총 광고비", current.totalAdSpend, prev.totalAdSpend],
         ["고정비 전 순수익", current.mtdNet, prev.mtdNet],
-        ["최종 이익", current.mtdNet - fixedCost, prev.mtdNet - fixedCost]
+        ["최종 이익", current.mtdNet - fixedCost, prev.mtdNet - prevFixedCost]
       ];
       document.getElementById("compareGrid").innerHTML = metrics.map(([name, currentValue, prevValue]) => {
         const diff = currentValue - prevValue;
@@ -930,6 +953,20 @@ mtd_achievement_rate =
       document.getElementById("bridgeFinalProfitNote").textContent = hasRows
         ? `월 고정비 전체 차감 후 ${afterFixedProfit >= 0 ? "흑자" : "적자"}`
         : `${monthMeta.label} 최종 이익은 확정 데이터 적재 후 표시됩니다.`;
+      renderFixedBars(monthKey);
+      const qualityKeys = Object.keys(qualityCounts).sort((a, b) => qualityCounts[b] - qualityCounts[a] || a.localeCompare(b));
+      const primaryQuality = qualityKeys[0] || monthMeta.quality || "확인 필요";
+      const qualityValueEl = document.getElementById("dataQualityValue");
+      qualityValueEl.textContent = hasRows ? primaryQuality : "D+1 CLOSED";
+      qualityValueEl.className = "value " + (
+        primaryQuality.includes("OK") ? "good" :
+        primaryQuality.includes("MATCH_CHECK") ? "warn" :
+        primaryQuality.includes("MISSING") ? "bad" :
+        "violet"
+      );
+      document.getElementById("dataQualityCardNote").textContent = hasRows
+        ? `${monthMeta.label} 최신 폐장행은 ${monthMeta.key}-${String(effectiveDay).padStart(2, "0")} 기준입니다. 품질 분포: ${qualitySummary}.`
+        : "조회 월별 최신 폐장행까지만 노출합니다. 데이터가 없는 월은 적재 대기 상태로 표시합니다.";
       renderComparison(monthKey, queryDay, summary, fixedCost);
       renderProductTables(monthKey);
       document.getElementById("dailyProfitBars").innerHTML = hasRows ? enrichedRows.map(row => {
