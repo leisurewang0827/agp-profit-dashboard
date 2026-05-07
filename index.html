@@ -891,7 +891,7 @@ mtd_achievement_rate =
       const mtdNetRate = revenue > 0 ? mtdNet / revenue : 0;
       const dailyTarget = fixedCost / daysInMonth;
       const bepRevenue = mtdNetRate > 0 ? fixedCost / mtdNetRate : 0;
-      const mtdTarget = fixedCost;
+      const mtdTarget = dailyTarget * effectiveDay;
       const rate = mtdTarget > 0 ? mtdNet / mtdTarget : 0;
       const afterFixedProfit = mtdNet - fixedCost;
       const capped = Math.max(0, Math.min(rate * 100, 200));
@@ -946,7 +946,7 @@ mtd_achievement_rate =
       document.getElementById("bridgeProfit").textContent = asText(hasRows ? mtdNet : null);
       document.getElementById("bridgeProfit").className = "value " + (!hasRows ? "" : (mtdNet >= 0 ? "good" : "bad"));
       document.getElementById("bridgeProfitNote").textContent = hasRows
-        ? `월간 BEP 목표 ${won(fixedCost)} 대비 ${percent(rate)} 달성`
+        ? `${effectiveDay}일 누적 BEP 목표 ${won(mtdTarget)} 대비 ${percent(rate)} 달성`
         : `${monthMeta.label} 데이터 적재 후 자동 계산됩니다.`;
       document.getElementById("bridgeFixed").textContent = won(fixedCost);
       document.getElementById("bridgeFinalProfit").textContent = asText(hasRows ? afterFixedProfit : null);
