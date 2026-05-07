@@ -956,7 +956,11 @@ mtd_achievement_rate =
         : `${monthMeta.label} 최종 이익은 확정 데이터 적재 후 표시됩니다.`;
       renderFixedBars(monthKey);
       const qualityKeys = Object.keys(qualityCounts).sort((a, b) => qualityCounts[b] - qualityCounts[a] || a.localeCompare(b));
-      const primaryQuality = qualityKeys[0] || monthMeta.quality || "확인 필요";
+      const qualityPriority = ["MISSING_NAVER_SEARCHAD_SPEND", "MATCH_CHECK", "MISSING_IMWEB"];
+      const primaryQuality = qualityPriority.find(key => qualityCounts[key] > 0)
+        || qualityKeys[0]
+        || monthMeta.quality
+        || "확인 필요";
       const qualityValueEl = document.getElementById("dataQualityValue");
       qualityValueEl.textContent = hasRows ? primaryQuality : "D+1 CLOSED";
       qualityValueEl.className = "value " + (
