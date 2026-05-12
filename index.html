@@ -256,7 +256,7 @@
       <div class="topline">
         <div>
           <h1>AGP 순이익 달성률 대시보드</h1>
-          <div class="sub">매출은 자사몰·네이버 운영 API 기준, 자사몰/네이버 순이익 합산·광고비·AGP 순수익은 Supabase mart_daily_profit_gauge 기준입니다.</div>
+          <div class="sub">매출은 자사몰·네이버 운영 API 기준, 자사몰/네이버 순이익 합산·광고비는 Supabase 기준, AGP 공식 순수익은 운영 변동비 12%를 추가 차감합니다.</div>
         </div>
         <span class="badge" id="latestClosedBadge">D+1 확정 데이터 · 최신 폐장행 확인 중</span>
       </div>
@@ -283,6 +283,7 @@
               <div class="formula-row"><span>└ Meta 광고비</span><strong id="fMetaAdSpend">₩0</strong></div>
               <div class="formula-row"><span>└ Google Ads 광고비</span><strong id="fGoogleAdsSpend">₩0</strong></div>
               <div class="formula-row"><span>└ Naver SearchAd 광고비</span><strong id="fNaverSearchAdSpend">₩0</strong></div>
+              <div class="formula-row"><span>- 매출기준 운영 변동비 12%</span><strong id="fOperatingVariableCost">₩0</strong></div>
               <div class="formula-row"><span>= 고정비 전 순수익</span><strong id="fNetProfit">₩0</strong></div>
               <div class="formula-row"><span id="fMtdTargetLabel">- 누적 BEP 목표</span><strong id="fMtdTarget">₩0</strong></div>
               <div class="formula-row"><span>= 월 고정비 전체 차감 후 이익</span><strong id="fAfterFixed">₩0</strong></div>
@@ -311,14 +312,14 @@
             <div><div class="label">Google Ads 광고비</div><div class="value" id="googleAdsSpend">₩0</div></div>
             <div><div class="label">Naver SearchAd 광고비</div><div class="value" id="naverSearchAdSpend">₩0</div></div>
             <div><div class="label">주문 실측 차감액</div><div class="value" id="totalVariableCost">₩0</div></div>
-            <div><div class="label">매출기준 운영 변동비(22%)</div><div class="value" id="operatingVariableCost">₩0</div></div>
+            <div><div class="label">매출기준 운영 변동비(12%)</div><div class="value" id="operatingVariableCost">₩0</div></div>
             <div><div class="label">월 고정비</div><div class="value" id="monthlyFixedCost">₩0</div></div>
             <div><div class="label">총이익</div><div class="value" id="afterFixedProfit">₩0</div></div>
             <div><div class="label">BEP 매출</div><div class="value" id="bepRevenue">₩0</div></div>
             <div><div class="label">일평균 BEP 순이익</div><div class="value" id="dailyTarget">₩0</div></div>
           </div>
           <div class="note" id="monthPolicyNote">월별 손익은 독립 월 단위로 관리합니다.</div>
-          <div class="note" id="dataSourceNote">매출은 운영 API 기준, 자사몰/네이버 순이익 합산·광고비·AGP 순수익은 Supabase 기준입니다. 월을 바꾸면 과거 월 기준으로 다시 계산하고, URL에도 현재 월/기준일 상태를 반영합니다.</div>
+          <div class="note" id="dataSourceNote">매출은 운영 API 기준, 자사몰/네이버 순이익 합산·광고비는 Supabase 기준입니다. AGP 공식 순수익은 매출기준 운영 변동비 12%를 추가 차감합니다.</div>
         </div>
       </section>
 
@@ -336,9 +337,9 @@
             <div class="bridge-op">총매출 - 자사몰/네이버 순이익 합산</div>
           </div>
           <div class="bridge-step">
-            <div class="label">매출기준 운영 변동비(참고)</div>
+            <div class="label">- 매출기준 운영 변동비 12%</div>
             <div class="value bad" id="bridgeOperatingVariableCost">₩0</div>
-            <div class="bridge-op">총매출 × 22.0% · AGP 공식 순수익에는 별도 미차감</div>
+            <div class="bridge-op">부가세 10% + 기타 마케팅비 1% + 기타 물류비 1%</div>
           </div>
           <div class="bridge-step">
             <div class="label">자사몰+네이버 순이익 합산</div>
@@ -395,7 +396,7 @@
 
       <section class="card">
         <h2>일별 순수익 / 1일 BEP 달성률</h2>
-        <div class="note">각 막대는 `자사몰 순이익 + 네이버 순이익 - Meta/Google Ads/Naver SearchAd 광고비`입니다. 오른쪽 %는 그날의 BEP 순이익 목표 대비 달성률입니다.</div>
+        <div class="note">각 막대는 `자사몰 순이익 + 네이버 순이익 - Meta/Google Ads/Naver SearchAd 광고비 - 매출기준 운영 변동비 12%`입니다. 오른쪽 %는 그날의 BEP 순이익 목표 대비 달성률입니다.</div>
         <div class="profit-bars" id="dailyProfitBars"></div>
       </section>
 
@@ -407,8 +408,8 @@
         </div>
         <div class="card">
           <div class="label">운영 변동비율</div>
-          <div class="value teal">22.0%</div>
-          <div class="note">제품원가는 별도. 광고비는 매일 직접 차감하므로 마케팅비는 1.0%만 반영.</div>
+          <div class="value teal">12.0%</div>
+          <div class="note">부가세 10% + 기타 마케팅비 1% + 기타 물류비 1%를 공식 순수익에서 추가 차감.</div>
         </div>
         <div class="card">
           <div class="label">데이터 기반</div>
@@ -438,7 +439,7 @@
             <thead><tr><th>항목</th><th>비율</th><th>상태</th></tr></thead>
             <tbody id="varRows"></tbody>
           </table>
-          <div class="note">운영 변동비 22.0%는 매출 기준 계획/시뮬레이션 룰입니다. 현재 AGP 공식 순수익은 Supabase 주문 파이프라인의 SKU 원가, 수수료, 배송비 실측값을 우선하며, 22.0%를 자동 중복 차감하지 않습니다.</div>
+          <div class="note">운영 변동비 12.0%는 자사몰/네이버 주문 순이익에 이미 반영된 SKU 원가, 수수료, 배송비와 중복되는 항목을 제외하고 AGP 공식 순수익에서 추가 차감합니다.</div>
         </div>
       </section>
 
@@ -522,14 +523,9 @@ mtd_achievement_rate =
     };
     const variableCosts = [
       ["부가세", 10.0, "확정"],
-      ["포장재비", 0.0, "확정"],
-      ["반품/교환", 0.0, "확정"],
-      ["카드/PG 수수료", 3.5, "추정"],
-      ["마케팅비", 1.0, "추정"],
-      ["물류비", 1.5, "추정"],
-      ["채널 판매수수료", 5.0, "추정"],
-      ["기타", 1.0, "추정"],
-      ["운영 변동비 합계", 22.0, "혼합"]
+      ["기타 마케팅비", 1.0, "추정"],
+      ["기타 물류비", 1.0, "추정"],
+      ["운영 변동비 합계", 12.0, "혼합"]
     ];
     const operatingVariableRate = (variableCosts.find(([name]) => name === "운영 변동비 합계")?.[1] || 0) / 100;
     const cogs = [
@@ -780,14 +776,16 @@ mtd_achievement_rate =
         const naverSearchAd = Number(row.naverAd || 0);
         const adSpend = metaAd + googleAd + naverSearchAd;
         const commerceContribution = row.imweb + row.naver;
+        const operatingVariableCost = Number(row.revenue || 0) * operatingVariableRate;
         return {
           ...row,
           metaAd,
           googleAd,
           naverSearchAd,
           adSpend,
+          operatingVariableCost,
           commerceContribution,
-          dailyNet: commerceContribution - adSpend
+          dailyNet: commerceContribution - adSpend - operatingVariableCost
         };
       });
       const revenue = enrichedRows.reduce((sum, row) => sum + Number(row.revenue || 0), 0);
@@ -801,7 +799,7 @@ mtd_achievement_rate =
       const googleAdsSpend = enrichedRows.reduce((sum, row) => sum + row.googleAd, 0);
       const naverSearchAdSpend = enrichedRows.reduce((sum, row) => sum + row.naverSearchAd, 0);
       const measuredOrderCost = revenue - commerceContribution;
-      const operatingVariableCost = revenue * operatingVariableRate;
+      const operatingVariableCost = enrichedRows.reduce((sum, row) => sum + row.operatingVariableCost, 0);
       const hasApiRevenue = enrichedRows.some(row => row.selfRevenueApi != null || row.naverRevenueApi != null);
       const mtdNet = enrichedRows.reduce((sum, row) => sum + row.dailyNet, 0);
       const sourceCounts = enrichedRows.reduce((counts, row) => {
@@ -952,6 +950,7 @@ mtd_achievement_rate =
       document.getElementById("fMetaAdSpend").textContent = asText(hasRows ? metaAdSpend : null);
       document.getElementById("fGoogleAdsSpend").textContent = asText(hasRows ? googleAdsSpend : null);
       document.getElementById("fNaverSearchAdSpend").textContent = asText(hasRows ? naverSearchAdSpend : null);
+      document.getElementById("fOperatingVariableCost").textContent = asText(hasRows ? operatingVariableCost : null);
       document.getElementById("fNetProfit").textContent = asText(hasRows ? mtdNet : null);
       document.getElementById("fMtdTargetLabel").textContent = `${effectiveDay}일 누적 BEP 목표`;
       document.getElementById("fMtdTarget").textContent = won(mtdTarget);
@@ -990,8 +989,8 @@ mtd_achievement_rate =
         .join(" · ");
       document.getElementById("dataSourceNote").textContent = hasRows
         ? (hasApiRevenue
-          ? `${monthMeta.label} ${monthMeta.firstDate} ~ ${monthMeta.lastDate} 기준, 매출은 자사몰 API ${won(selfRevenueApi)} + 네이버 API ${won(naverRevenueApi)} = ${won(revenue)}를 사용합니다. 자사몰/네이버 순이익 합산·광고비·AGP 순수익은 Supabase 기준입니다. 매출기준 운영 변동비 22.0%는 ${won(operatingVariableCost)}이며 공식 순수익에는 별도 미차감합니다. 광고비 원천: ${sourceSummary}. 품질상태: ${qualitySummary}.`
-          : `${monthMeta.label} ${monthMeta.firstDate} ~ ${monthMeta.lastDate} 확정 데이터입니다. 매출·자사몰/네이버 순이익 합산·광고비·AGP 순수익은 Supabase 기준입니다. 매출기준 운영 변동비 22.0%는 ${won(operatingVariableCost)}이며 공식 순수익에는 별도 미차감합니다. 광고비 원천: ${sourceSummary}. 품질상태: ${qualitySummary}.`)
+          ? `${monthMeta.label} ${monthMeta.firstDate} ~ ${monthMeta.lastDate} 기준, 매출은 자사몰 API ${won(selfRevenueApi)} + 네이버 API ${won(naverRevenueApi)} = ${won(revenue)}를 사용합니다. 자사몰/네이버 순이익 합산·광고비는 Supabase 기준이고, AGP 공식 순수익에는 매출기준 운영 변동비 12.0% ${won(operatingVariableCost)}를 추가 차감합니다. 광고비 원천: ${sourceSummary}. 품질상태: ${qualitySummary}.`
+          : `${monthMeta.label} ${monthMeta.firstDate} ~ ${monthMeta.lastDate} 확정 데이터입니다. 매출·자사몰/네이버 순이익 합산·광고비는 Supabase 기준이고, AGP 공식 순수익에는 매출기준 운영 변동비 12.0% ${won(operatingVariableCost)}를 추가 차감합니다. 광고비 원천: ${sourceSummary}. 품질상태: ${qualitySummary}.`)
         : `${monthMeta.label}은 아직 확정 데이터가 없습니다. ${monthMeta.emptyState}`;
       document.getElementById("bridgeProfit").textContent = asText(hasRows ? mtdNet : null);
       document.getElementById("bridgeProfit").className = "value " + (!hasRows ? "" : (mtdNet >= 0 ? "good" : "bad"));
