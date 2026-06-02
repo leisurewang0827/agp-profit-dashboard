@@ -300,7 +300,7 @@
             <label><div class="label">조회 월</div><select id="monthSelect"></select></label>
             <label><div class="label">데이터 기준일</div><input id="queryDayInput" type="number" value="29" min="1" max="31" step="1"></label>
             <label><div class="label">월 일수</div><input id="daysInput" type="number" value="30" min="28" max="31" step="1"></label>
-            <label><div class="label">월 고정비</div><input id="fixedInput" type="number" value="18827126" min="0" step="100000" readonly></label>
+            <label><div class="label">월 고정비</div><input id="fixedInput" type="number" value="18552126" min="0" step="100000" readonly></label>
             <label><div class="label">일별 광고비</div><input value="매일 차감" disabled></label>
             <label><div class="label">데이터 확정</div><input value="D+1 조회" disabled></label>
           </div>
@@ -404,7 +404,7 @@
       <section class="grid kpis">
         <div class="card">
           <div class="label">월 고정비</div>
-          <div class="value" id="fixedCostInfoValue">₩18,827,126</div>
+          <div class="value" id="fixedCostInfoValue">₩18,552,126</div>
           <div class="note" id="fixedCostInfoNote">선택한 월의 세부 고정비 항목 합계입니다.</div>
         </div>
         <div class="card">
@@ -536,8 +536,7 @@ mtd_achievement_rate =
         ["사스 서비스 · 와이즐리 멤버십", 2990, 0.0],
         ["사스 서비스 · 정기과금_나이스", 54890, 0.3],
         ["외주 서비스 · 세무법인청년", 200000, 1.0],
-        ["외주 서비스 · 경리 (2026년 7월까지)", 800000, 4.0],
-        ["외주 서비스 · 노무자문", 275000, 1.4]
+        ["외주 서비스 · 경리 (2026년 7월까지)", 800000, 4.0]
       ]
     };
     const variableCosts = [
@@ -597,7 +596,7 @@ mtd_achievement_rate =
       "2026-06": {
         label: "2026년 6월",
         daysInMonth: 30,
-        fixedCost: 18827126,
+        fixedCost: 18552126,
         quality: "MATCH_CHECK 1일",
         emptyState: "6월 최신 D+1 확정행은 6월 1일까지입니다.",
         closeNote: "6월 손익은 6월 1일부터 독립 월로 누적합니다. 5월 데이터와 합산하지 않습니다."
