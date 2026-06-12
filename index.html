@@ -249,6 +249,43 @@
       table { font-size: 12px; }
     }
   </style>
+  <style id="mobile-ux-patch-20260611">
+    /* mobile UX patch 2026-06-11 : 360-430px iframe (desktop unaffected) */
+    @media (max-width: 768px) {
+      body { -webkit-overflow-scrolling: touch; word-break: keep-all; overflow-wrap: break-word; }
+      .sql { -webkit-overflow-scrolling: touch; }
+    }
+    @media (max-width: 480px) {
+      /* padding 28px -> 12px */
+      header { padding: 14px 12px 12px !important; }
+      main { padding: 14px 12px 36px !important; }
+      /* typography scale-down */
+      h1 { font-size: 20px !important; line-height: 1.3 !important; }
+      h2 { font-size: 16px !important; }
+      .value { overflow-wrap: anywhere; }
+      .kpis .value { font-size: 19px !important; }
+      .compare-card .value { font-size: 17px !important; }
+      /* iOS auto-zoom prevention + touch targets */
+      input, select, textarea { font-size: 16px !important; padding: 12px 14px !important; min-height: 44px; }
+      button, a.button, .button { min-height: 44px; }
+      .badge { min-height: 44px !important; padding: 8px 14px !important; white-space: normal !important; }
+      /* gauge: clamp width so it fits 360px viewport */
+      .gauge-card { grid-template-columns: 1fr !important; min-height: 0 !important; }
+      .gauge { width: clamp(140px, 75vw, 240px) !important; height: auto !important; aspect-ratio: 1 / 1 !important; margin: 0 auto !important; }
+      .gauge-num { font-size: clamp(28px, 11vw, 40px) !important; }
+      /* grids: 2-column on mobile instead of long 1-column stacks */
+      .kpis, .bridge, .compare-grid, .inputs, .mini { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+      .hero, .two, .three { grid-template-columns: 1fr !important; }
+      .bar-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+      .profit-bar { grid-template-columns: 1fr !important; gap: 5px !important; }
+      /* tables: self-scrolling + touch-friendly cells */
+      table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      th, td { padding: 13px 8px !important; }
+    }
+    @media (max-width: 399px) {
+      .kpis, .bridge { grid-template-columns: 1fr !important; }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -597,8 +634,8 @@ mtd_achievement_rate =
         label: "2026년 6월",
         daysInMonth: 30,
         fixedCost: 18552126,
-        quality: "MATCH_CHECK 10일",
-        emptyState: "6월 최신 D+1 확정행은 6월 10일까지입니다.",
+        quality: "MATCH_CHECK 11일",
+        emptyState: "6월 최신 D+1 확정행은 6월 11일까지입니다.",
         closeNote: "6월 손익은 6월 1일부터 독립 월로 누적합니다. 5월 데이터와 합산하지 않습니다."
       }
     };
@@ -690,7 +727,8 @@ mtd_achievement_rate =
         { day: 7, revenue: 4752750, selfRevenueApi: 3755140, naverRevenueApi: 997610, imweb: 1754889, naver: 397103.52, meta: 543203, googleAd: 17843, naverAd: 11494, imwebDeliveryFee: 290700, naverDeliveryFee: 68400, totalDeliveryFee: 359100, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
         { day: 8, revenue: 6858011, selfRevenueApi: 4084411, naverRevenueApi: 2773600, imweb: 1739843, naver: 1031413.20, meta: 547064, googleAd: 14504, naverAd: 11360, imwebDeliveryFee: 319200, naverDeliveryFee: 210900, totalDeliveryFee: 530100, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
         { day: 9, revenue: 5311628, selfRevenueApi: 3699128, naverRevenueApi: 1612500, imweb: 1968455, naver: 571305, meta: 511454, googleAd: 15279, naverAd: 5434, imwebDeliveryFee: 290700, naverDeliveryFee: 114000, totalDeliveryFee: 404700, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
-        { day: 10, revenue: 6741466, selfRevenueApi: 4591976, naverRevenueApi: 2149490, imweb: 2209517, naver: 713003.68, meta: 493434, googleAd: 14312, naverAd: 9426, imwebDeliveryFee: 324900, naverDeliveryFee: 182400, totalDeliveryFee: 507300, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" }
+        { day: 10, revenue: 6741466, selfRevenueApi: 4591976, naverRevenueApi: 2149490, imweb: 2209517, naver: 713003.68, meta: 493434, googleAd: 14312, naverAd: 9426, imwebDeliveryFee: 324900, naverDeliveryFee: 182400, totalDeliveryFee: 507300, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" },
+        { day: 11, revenue: 4273571, selfRevenueApi: 2125941, naverRevenueApi: 2147630, imweb: 886599, naver: 737898.16, meta: 454347, googleAd: 9489, naverAd: 10560, imwebDeliveryFee: 136800, naverDeliveryFee: 165300, totalDeliveryFee: 302100, metaSource: "stg_ads_daily", googleSource: "stg_ads_daily", naverSearchSource: "stg_ads_daily", quality: "MATCH_CHECK" }
       ]
     };
     const categoryRowsByMonth = {
