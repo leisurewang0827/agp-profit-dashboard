@@ -175,17 +175,22 @@
     }
     .track { height: 10px; background: #edf0f5; border-radius: 999px; overflow: hidden; }
     .fill { height: 100%; border-radius: 999px; background: var(--blue); }
-    .profit-bars {
+    .profit-bars,
+    .revenue-bars {
       display: grid;
       gap: 8px;
       margin-top: 12px;
     }
-    .profit-bar {
+    .profit-bar,
+    .revenue-bar {
       display: grid;
       grid-template-columns: 76px 1fr 110px 92px;
       gap: 10px;
       align-items: center;
       font-size: 12px;
+    }
+    .revenue-bar {
+      grid-template-columns: 76px 1fr 112px 132px;
     }
     .profit-track {
       height: 16px;
@@ -201,6 +206,13 @@
       background: var(--green);
     }
     .profit-fill.loss { background: var(--red); }
+    .revenue-fill {
+      height: 100%;
+      min-width: 2px;
+      border-radius: 999px;
+      background: var(--blue);
+    }
+    .revenue-cumulative { color: var(--muted); font-weight: 750; }
     .sql {
       background: #101828;
       color: #e7edf8;
@@ -245,7 +257,7 @@
       .gauge-card { grid-template-columns: 1fr; }
       .gauge { width: min(260px, 100%); height: auto; aspect-ratio: 1; margin: 0 auto; }
       .bar-row { grid-template-columns: 1fr; gap: 6px; }
-      .profit-bar { grid-template-columns: 1fr; gap: 5px; }
+      .profit-bar, .revenue-bar { grid-template-columns: 1fr; gap: 5px; }
       table { font-size: 12px; }
     }
   </style>
@@ -277,7 +289,7 @@
       .kpis, .bridge, .compare-grid, .inputs, .mini { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
       .hero, .two, .three { grid-template-columns: 1fr !important; }
       .bar-row { grid-template-columns: 1fr !important; gap: 6px !important; }
-      .profit-bar { grid-template-columns: 1fr !important; gap: 5px !important; }
+      .profit-bar, .revenue-bar { grid-template-columns: 1fr !important; gap: 5px !important; }
       /* tables: self-scrolling + touch-friendly cells */
       table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       th, td { padding: 13px 8px !important; }
@@ -342,7 +354,8 @@
             <label><div class="label">데이터 확정</div><input value="D+1 조회" disabled></label>
           </div>
           <div class="mini">
-            <div><div class="label">총 매출</div><div class="value" id="totalRevenue">₩0</div></div>
+            <div><div class="label">기준일 매출</div><div class="value" id="selectedDayRevenue">₩0</div></div>
+            <div><div class="label">1일~기준일 누적 매출</div><div class="value" id="totalRevenue">₩0</div></div>
             <div><div class="label">자사몰+네이버 순이익 합산</div><div class="value" id="totalContribution">₩0</div></div>
             <div><div class="label">총 광고비</div><div class="value" id="totalAdSpend">₩0</div></div>
             <div><div class="label">Meta 광고비</div><div class="value" id="metaAdSpend">₩0</div></div>
@@ -411,6 +424,12 @@
         <h2>당월 / 전월 비교</h2>
         <div class="compare-grid" id="compareGrid"></div>
         <div class="note" id="compareNote">선택한 월과 직전 월을 같은 기준일 기준으로 비교합니다.</div>
+      </section>
+
+      <section class="card">
+        <h2>일별 매출 / 1일~기준일 누적 매출</h2>
+        <div class="note" id="dailyRevenueNote">자사몰 API 결제매출과 네이버 API 결제매출을 합산해 일별 매출과 기준일까지의 누적 매출을 함께 봅니다.</div>
+        <div class="revenue-bars" id="dailyRevenueBars"></div>
       </section>
 
       <section class="grid two">
@@ -880,6 +899,7 @@ mtd_achievement_rate =
 
     function summarizeRows(monthKey, queryDay) {
       const rows = (dailyRowsByMonth[monthKey] || []).filter(row => row.day <= queryDay);
+      let cumulativeRevenue = 0;
       const enrichedRows = rows.map(row => {
         const metaAd = Number(row.meta || 0);
         const googleAd = Number(row.googleAd || 0);
@@ -889,9 +909,11 @@ mtd_achievement_rate =
         const apiRevenue = Number(row.selfRevenueApi || 0) + Number(row.naverRevenueApi || 0);
         const revenueBasis = apiRevenue > 0 ? apiRevenue : Number(row.revenue || 0);
         const operatingVariableCost = revenueBasis * operatingVariableRate;
+        cumulativeRevenue += revenueBasis;
         return {
           ...row,
           revenue: revenueBasis,
+          cumulativeRevenue,
           metaAd,
           googleAd,
           naverSearchAd,
@@ -1059,6 +1081,7 @@ mtd_achievement_rate =
       const mtdTarget = dailyTarget * effectiveDay;
       const rate = mtdTarget > 0 ? mtdNet / mtdTarget : 0;
       const afterFixedProfit = mtdNet - fixedCost;
+      const selectedDayRevenue = hasRows ? Number(enrichedRows[enrichedRows.length - 1].revenue || 0) : null;
       const capped = Math.max(0, Math.min(rate * 100, 200));
       const [color, status] = gaugeColor(rate);
       document.getElementById("gauge").style.setProperty("--gauge-color", color);
@@ -1087,6 +1110,7 @@ mtd_achievement_rate =
       document.getElementById("metaAdSpend").textContent = asText(hasRows ? metaAdSpend : null);
       document.getElementById("googleAdsSpend").textContent = asText(hasRows ? googleAdsSpend : null);
       document.getElementById("naverSearchAdSpend").textContent = asText(hasRows ? naverSearchAdSpend : null);
+      document.getElementById("selectedDayRevenue").textContent = asText(selectedDayRevenue);
       document.getElementById("totalRevenue").textContent = asText(hasRows ? revenue : null);
       document.getElementById("totalContribution").textContent = asText(hasRows ? commerceContribution : null);
       document.getElementById("totalVariableCost").textContent = asText(hasRows ? measuredOrderCost : null);
@@ -1146,6 +1170,31 @@ mtd_achievement_rate =
         : "조회 월별 최신 폐장행까지만 노출합니다. 데이터가 없는 월은 적재 대기 상태로 표시합니다.";
       renderComparison(monthKey, queryDay, summary, fixedCost);
       renderProductTables(monthKey);
+      const maxDailyRevenue = hasRows
+        ? Math.max(...enrichedRows.map(row => Math.abs(Number(row.revenue || 0))), 1)
+        : 1;
+      document.getElementById("dailyRevenueNote").textContent = hasRows
+        ? `${monthMeta.label} 1일~${effectiveDay}일 누적 매출 ${won(revenue)}입니다. 기준일 매출은 ${won(selectedDayRevenue)}이고, 각 행의 오른쪽에는 해당일까지 쌓인 누적 매출을 표시합니다.`
+        : `${monthMeta.label}은 아직 확정 매출 데이터가 없습니다. ${monthMeta.emptyState}`;
+      document.getElementById("dailyRevenueBars").innerHTML = hasRows ? enrichedRows.map(row => {
+        const width = Math.max(Math.min((Math.abs(Number(row.revenue || 0)) / maxDailyRevenue) * 100, 100), 2);
+        const label = `${row.day}일`;
+        const selfRevenue = Number(row.selfRevenueApi || 0);
+        const naverRevenue = Number(row.naverRevenueApi || 0);
+        const basisNote = selfRevenue + naverRevenue > 0
+          ? `자사몰 ${won(selfRevenue)} · 네이버 ${won(naverRevenue)}`
+          : "매출 원천 합계";
+        return `
+          <div class="revenue-bar">
+            <div>${label}</div>
+            <div class="profit-track" title="${basisNote}">
+              <div class="revenue-fill" style="width:${width}%"></div>
+            </div>
+            <div>${won(row.revenue)}</div>
+            <div class="revenue-cumulative">누적 ${won(row.cumulativeRevenue)}</div>
+          </div>
+        `;
+      }).join("") : `<div class="note">${monthMeta.emptyState}</div>`;
       document.getElementById("dailyProfitBars").innerHTML = hasRows ? enrichedRows.map(row => {
         const dailyBepRate = dailyTarget > 0 ? row.dailyNet / dailyTarget : 0;
         const width = Math.max(Math.min(Math.abs(dailyBepRate) * 100, 160), 2);
