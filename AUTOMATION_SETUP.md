@@ -17,6 +17,9 @@ This repository currently holds static dashboard artifacts and public Codex oper
 1. Work from this repository path.
 2. Copy `.env.example` to `.env.local`.
 3. Fill `.env.local` only on the local computer or a proper secret store.
+   - Use `SUPABASE_URL` without `/rest/v1/`, e.g. `https://project-ref.supabase.co`.
+   - Use the legacy `service_role` JWT from Supabase `API Keys > Legacy anon, service_role API keys`.
+   - Do not use a newer `sb_secret_*` key for the current REST checks unless the API confirms it works.
 4. Run:
 
 ```powershell

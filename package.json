@@ -6,6 +6,7 @@
   "scripts": {
     "check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-local-setup.ps1",
     "check:data": "node scripts/check-dashboard-data.mjs",
+    "check:supabase": "node scripts/check-supabase.mjs",
     "check:all": "npm.cmd run check && npm.cmd run check:data",
     "serve": "python -m http.server 4173"
   }

@@ -64,7 +64,10 @@ if (Test-Path ".env.local") {
   $envContent = Get-Content ".env.local" -ErrorAction SilentlyContinue
   $requiredKeys = @(
     "SUPABASE_URL",
-    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY"
+  )
+
+  $optionalKeys = @(
     "META_ACCESS_TOKEN",
     "META_AD_ACCOUNT_ID"
   )
@@ -78,6 +81,17 @@ if (Test-Path ".env.local") {
       }
     }
     Write-Status "Env $key" $hasValue $(if ($hasValue) { "configured" } else { "missing or empty" })
+  }
+
+  foreach ($key in $optionalKeys) {
+    $hasValue = $false
+    foreach ($line in $envContent) {
+      if ($line -match "^\s*$([regex]::Escape($key))\s*=\s*.+") {
+        $hasValue = $true
+        break
+      }
+    }
+    Write-Status "Optional env $key" $true $(if ($hasValue) { "configured" } else { "not configured" })
   }
 } else {
   Write-Status ".env.local" $false "copy .env.example to .env.local and fill local secrets"
