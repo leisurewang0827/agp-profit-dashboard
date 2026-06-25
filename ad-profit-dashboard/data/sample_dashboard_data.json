@@ -1,0 +1,45 @@
+{
+  "notice": "Public-safe sample dashboard data only. Do not add private raw sales data here.",
+  "generated_at": "2026-06-24T15:52:38.744724+00:00",
+  "summary": {
+    "sales_rows": 3,
+    "product_rows": 2,
+    "total_quantity": 6,
+    "total_revenue": 80000
+  },
+  "sales": [
+    {
+      "sale_date": "2026-06-01",
+      "channel": "online",
+      "product": "Sample Product A",
+      "quantity": 2,
+      "revenue": 20000
+    },
+    {
+      "sale_date": "2026-06-02",
+      "channel": "offline",
+      "product": "Sample Product B",
+      "quantity": 1,
+      "revenue": 15000
+    },
+    {
+      "sale_date": "2026-06-03",
+      "channel": "online",
+      "product": "Sample Product C",
+      "quantity": 3,
+      "revenue": 45000
+    }
+  ],
+  "products": [
+    {
+      "product_id": "sample-001",
+      "product_name": "Sample Product A",
+      "category": "Basic"
+    },
+    {
+      "product_id": "sample-002",
+      "product_name": "Sample Product B",
+      "category": "Premium"
+    }
+  ]
+}
