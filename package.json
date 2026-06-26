@@ -7,6 +7,7 @@
     "check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-local-setup.ps1",
     "check:data": "node scripts/check-dashboard-data.mjs",
     "check:supabase": "node scripts/check-supabase.mjs",
+    "check:automation": "node scripts/check-automation-runs.mjs",
     "verify:supabase-data": "node scripts/verify-supabase-data.mjs",
     "sync:supabase": "node scripts/sync-static-data-to-supabase.mjs",
     "sync:supabase:dry-run": "node scripts/sync-static-data-to-supabase.mjs --dry-run",

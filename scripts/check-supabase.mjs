@@ -49,7 +49,10 @@ const tables = [
   "mart_daily_profit_gauge_latest_closed",
   "stg_ads_daily",
   "meta_ad_profit_daily_summary",
-  "vw_ad_profit_platform_daily_summary"
+  "vw_ad_profit_platform_daily_summary",
+  "automation_runs",
+  "approval_requests",
+  "daily_briefings"
 ];
 
 console.log("Supabase connection check");

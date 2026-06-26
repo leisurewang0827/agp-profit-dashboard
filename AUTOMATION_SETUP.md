@@ -42,6 +42,9 @@ Known referenced tables/views:
 - `public.vw_ad_profit_platform_category_monthly`
 - `mart_daily_profit_gauge_latest_closed`
 - `stg_ads_daily`
+- `automation_runs`
+- `approval_requests`
+- `daily_briefings`
 
 ## Safe Operating Rules
 
@@ -72,18 +75,25 @@ Known referenced tables/views:
 ## Next Technical Milestones
 
 1. Run `npm.cmd run check:supabase` until the baseline tables/views return `OK`.
-2. Run `npm.cmd run sync:supabase:dry-run` to confirm planned row counts.
+2. Run `npm.cmd run sync:supabase:dry-run` to confirm planned row counts and create a dry-run entry in `automation_runs`.
 3. Run `npm.cmd run sync:supabase` to upsert the current static dashboard data into Supabase.
 4. Run `npm.cmd run verify:supabase-data` to confirm row counts and latest dates.
-5. Run `npm.cmd run build:from-supabase` to rebuild the dashboard artifacts from Supabase.
-6. Validate dashboard rendering locally.
-7. Commit and push the generated artifact.
-8. Add a scheduled runner only after manual refresh succeeds twice.
+5. Run `npm.cmd run build:from-supabase` to rebuild the dashboard artifacts from Supabase and log the run.
+6. Run `npm.cmd run check:automation` to review recent automation runs and pending approvals.
+7. Validate dashboard rendering locally.
+8. Commit and push the generated artifact.
+9. Add a scheduled runner only after manual refresh succeeds twice.
 
 ## Current Local Verification Commands
 
 - `npm.cmd run check`: verifies local tools and required secret placeholders.
 - `npm.cmd run check:data`: reads committed static dashboard files and reports the latest data dates.
+- `npm.cmd run check:supabase`: verifies Supabase tables/views are reachable.
+- `npm.cmd run check:automation`: reads recent automation runs and pending approval requests.
+- `npm.cmd run sync:supabase:dry-run`: previews static-data sync row counts.
+- `npm.cmd run sync:supabase`: upserts static dashboard data into Supabase.
+- `npm.cmd run verify:supabase-data`: verifies Supabase data counts and latest dates.
+- `npm.cmd run build:from-supabase`: rebuilds dashboard artifacts from Supabase.
 - `npm.cmd run check:all`: runs both checks.
 
 Current known output:

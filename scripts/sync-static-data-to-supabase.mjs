@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { recordRun } from "./automation-log.mjs";
 
 function loadEnv(path = ".env.local") {
   const env = {};
@@ -136,43 +137,73 @@ async function upsertRows({ env, table, rows, onConflict, chunkSize = 500, dryRu
   return { table, rows: rows.length, chunks };
 }
 
-const dryRun = process.argv.includes("--dry-run");
-const env = loadEnv();
-assertConfigured(env, "SUPABASE_URL");
-assertConfigured(env, "SUPABASE_SERVICE_ROLE_KEY");
+async function main() {
+  const dryRun = process.argv.includes("--dry-run");
+  const env = loadEnv();
+  assertConfigured(env, "SUPABASE_URL");
+  assertConfigured(env, "SUPABASE_SERVICE_ROLE_KEY");
 
-const mainRows = mainDashboardRows();
-const { categoryRows, channelRows } = adProfitRows();
+  const mainRows = mainDashboardRows();
+  const { categoryRows, channelRows } = adProfitRows();
 
-console.log("Static dashboard -> Supabase sync");
-console.log(`- Mode: ${dryRun ? "dry-run" : "write"}`);
-console.log(`- Main daily rows: ${mainRows.length}`);
-console.log(`- Ad category rows: ${categoryRows.length}`);
-console.log(`- Ad channel rows: ${channelRows.length}`);
+  console.log("Static dashboard -> Supabase sync");
+  console.log(`- Mode: ${dryRun ? "dry-run" : "write"}`);
+  console.log(`- Main daily rows: ${mainRows.length}`);
+  console.log(`- Ad category rows: ${categoryRows.length}`);
+  console.log(`- Ad channel rows: ${channelRows.length}`);
 
-const results = [];
-results.push(await upsertRows({
-  env,
-  table: "mart_daily_profit_gauge_latest_closed",
-  rows: mainRows,
-  onConflict: "report_date",
-  dryRun
-}));
-results.push(await upsertRows({
-  env,
-  table: "ad_profit_platform_category_daily",
-  rows: categoryRows,
-  onConflict: "report_date,platform,category",
-  dryRun
-}));
-results.push(await upsertRows({
-  env,
-  table: "stg_ads_daily",
-  rows: channelRows,
-  onConflict: "report_date,platform",
-  dryRun
-}));
+  const result = await recordRun(env, {
+    jobName: dryRun ? "sync_static_data_to_supabase_dry_run" : "sync_static_data_to_supabase",
+    summary: dryRun
+      ? "Planned static dashboard data sync to Supabase."
+      : "Synced static dashboard data to Supabase.",
+    metrics: {
+      dry_run: dryRun,
+      main_daily_rows: mainRows.length,
+      ad_category_rows: categoryRows.length,
+      ad_channel_rows: channelRows.length
+    }
+  }, async () => {
+    const results = [];
+    results.push(await upsertRows({
+      env,
+      table: "mart_daily_profit_gauge_latest_closed",
+      rows: mainRows,
+      onConflict: "report_date",
+      dryRun
+    }));
+    results.push(await upsertRows({
+      env,
+      table: "ad_profit_platform_category_daily",
+      rows: categoryRows,
+      onConflict: "report_date,platform,category",
+      dryRun
+    }));
+    results.push(await upsertRows({
+      env,
+      table: "stg_ads_daily",
+      rows: channelRows,
+      onConflict: "report_date,platform",
+      dryRun
+    }));
 
-for (const result of results) {
-  console.log(`- ${result.table}: ${result.rows} rows, ${result.chunks} chunk(s)${result.dryRun ? " planned" : " synced"}`);
+    return {
+      results,
+      summary: dryRun
+        ? "Static dashboard data sync dry-run completed."
+        : "Static dashboard data sync completed.",
+      metrics: {
+        dry_run: dryRun,
+        main_daily_rows: mainRows.length,
+        ad_category_rows: categoryRows.length,
+        ad_channel_rows: channelRows.length
+      }
+    };
+  });
+
+  for (const item of result.results) {
+    console.log(`- ${item.table}: ${item.rows} rows, ${item.chunks} chunk(s)${item.dryRun ? " planned" : " synced"}`);
+  }
 }
+
+await main();

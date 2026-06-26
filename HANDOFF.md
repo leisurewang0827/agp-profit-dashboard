@@ -22,6 +22,10 @@
 - `AUTOMATION_SETUP.md`: operating checklist for continuing the automation setup.
 - `scripts/check-local-setup.ps1`: local readiness check for Git, Node, npm, Python, Chrome, and secret placeholders.
 - `scripts/check-dashboard-data.mjs`: static dashboard data freshness check.
+- `scripts/sync-static-data-to-supabase.mjs`: upserts committed dashboard data into Supabase.
+- `scripts/rebuild-dashboard-from-supabase.mjs`: rebuilds dashboard artifacts from Supabase.
+- `scripts/automation-log.mjs`: shared Supabase-backed run logging helper.
+- `scripts/check-automation-runs.mjs`: reviews recent automation runs and pending approval requests.
 - `package.json`: lightweight helper commands for local checks and static serving.
 
 ## Important Findings
@@ -32,6 +36,8 @@
 - The standalone JSON file at `ad-profit-dashboard/data/ad_profit_dashboard_data.json` can parse as JSON, but PowerShell console output may display Korean text with encoding damage.
 - The ad dashboard HTML contains a separate inline JSON payload with readable Korean labels.
 - `npm.cmd run check:data` currently reports the main dashboard through `2026-06-24` and the ad dashboard through `2026-04-27`.
+- Supabase is now the source of truth for the first AGP refresh pipeline.
+- `automation_runs`, `approval_requests`, and `daily_briefings` exist as the reusable operations layer for AGP now and future Tennis Clubhouse automation later.
 - Do not push to `2019yundiet-cloud/agp-profit-dashboard` unless the owner explicitly grants access. Use a user-owned repository under `leisurewang0827` for ongoing work.
 
 ## Next Agent Prompt
@@ -47,6 +53,17 @@ npm.cmd run check:all
 ```
 
 Then verify `.env.local` exists locally with non-empty values for the read-only services needed for the current task. Do not print secrets. Use GitHub as the shared handoff surface, keep generated dashboard artifacts committed, and require explicit user approval before any write action to ad accounts, databases, Slack, or external systems.
+
+Common refresh sequence:
+
+```powershell
+npm.cmd run check:supabase
+npm.cmd run sync:supabase:dry-run
+npm.cmd run sync:supabase
+npm.cmd run verify:supabase-data
+npm.cmd run build:from-supabase
+npm.cmd run check:automation
+```
 
 ## Computer Split
 
