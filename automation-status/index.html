@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AGP Automation Status</title>
+  <style>
+    :root { color-scheme: light; --bg:#f7f8fb; --panel:#fff; --line:#d9dee8; --text:#162033; --muted:#667085; --good:#147d45; --warn:#b76e00; --bad:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, "Noto Sans KR", sans-serif; background: var(--bg); color: var(--text); }
+    .page { max-width: 1180px; margin: 0 auto; padding: 32px 20px 48px; }
+    header { display: flex; justify-content: space-between; gap: 20px; align-items: flex-end; border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 22px; }
+    h1 { margin: 0; font-size: 30px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+    section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+    h2 { margin: 0 0 14px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    .pill { display: inline-block; border-radius: 999px; padding: 3px 8px; font-size: 12px; font-weight: 700; background: #eef2f6; }
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+    pre { white-space: pre-wrap; font-family: inherit; line-height: 1.55; margin: 0; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-bottom: 18px; }
+    .card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fbfcfe; }
+    .metric { font-size: 22px; font-weight: 700; margin-top: 6px; }
+    @media (max-width: 860px) { .grid, .cards { grid-template-columns: 1fr; } header { display:block; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>AGP Automation Status</h1>
+        <div class="muted">Generated 2026-06-26T07:28:26.678Z</div>
+      </div>
+      <div class="muted">Source: Supabase automation tables</div>
+    </header>
+    <div class="cards">
+      <div class="card"><div class="muted">Briefing status</div><div class="metric good">ready</div></div>
+      <div class="card"><div class="muted">Pending approvals</div><div class="metric">0</div></div>
+      <div class="card"><div class="muted">Recent failed runs</div><div class="metric good">0</div></div>
+    </div>
+    <div class="grid">
+      <section>
+        <h2>Recent Runs</h2>
+        <table>
+          <thead><tr><th>Started</th><th>Job</th><th>Status</th><th>Duration</th></tr></thead>
+          <tbody>
+            <tr><td>2026-06-26T07:28:26.145+00:00</td><td>build_automation_status_page</td><td><span class="pill warn">running</span></td><td>- ms</td></tr><tr><td>2026-06-26T07:28:24.98+00:00</td><td>export_daily_briefing_to_obsidian</td><td><span class="pill good">success</span></td><td>452 ms</td></tr><tr><td>2026-06-26T07:28:23.182+00:00</td><td>generate_daily_briefing</td><td><span class="pill good">success</span></td><td>1071 ms</td></tr><tr><td>2026-06-26T07:28:21.36+00:00</td><td>rebuild_dashboard_from_supabase</td><td><span class="pill good">success</span></td><td>1094 ms</td></tr><tr><td>2026-06-26T07:28:17.319+00:00</td><td>sync_static_data_to_supabase</td><td><span class="pill good">success</span></td><td>917 ms</td></tr><tr><td>2026-06-26T07:28:16.362+00:00</td><td>sync_static_data_to_supabase_dry_run</td><td><span class="pill good">success</span></td><td>275 ms</td></tr><tr><td>2026-06-26T07:28:03.23+00:00</td><td>update_approval_request</td><td><span class="pill good">success</span></td><td>471 ms</td></tr><tr><td>2026-06-26T07:28:01.655+00:00</td><td>create_approval_request</td><td><span class="pill good">success</span></td><td>739 ms</td></tr><tr><td>2026-06-26T07:27:13.187+00:00</td><td>build_automation_status_page</td><td><span class="pill good">success</span></td><td>7208 ms</td></tr><tr><td>2026-06-26T07:19:17.395+00:00</td><td>export_daily_briefing_to_obsidian</td><td><span class="pill good">success</span></td><td>485 ms</td></tr><tr><td>2026-06-26T07:19:15.408+00:00</td><td>generate_daily_briefing</td><td><span class="pill good">success</span></td><td>1263 ms</td></tr><tr><td>2026-06-26T07:19:12.828+00:00</td><td>rebuild_dashboard_from_supabase</td><td><span class="pill good">success</span></td><td>1862 ms</td></tr><tr><td>2026-06-26T07:19:08.683+00:00</td><td>sync_static_data_to_supabase</td><td><span class="pill good">success</span></td><td>995 ms</td></tr><tr><td>2026-06-26T07:19:07.677+00:00</td><td>sync_static_data_to_supabase_dry_run</td><td><span class="pill good">success</span></td><td>283 ms</td></tr><tr><td>2026-06-26T07:18:40.832+00:00</td><td>export_daily_briefing_to_obsidian</td><td><span class="pill good">success</span></td><td>3306 ms</td></tr><tr><td>2026-06-26T07:10:01.225+00:00</td><td>generate_daily_briefing</td><td><span class="pill good">success</span></td><td>1140 ms</td></tr><tr><td>2026-06-26T07:09:58.926+00:00</td><td>rebuild_dashboard_from_supabase</td><td><span class="pill good">success</span></td><td>1543 ms</td></tr><tr><td>2026-06-26T07:09:54.727+00:00</td><td>sync_static_data_to_supabase</td><td><span class="pill good">success</span></td><td>988 ms</td></tr><tr><td>2026-06-26T07:09:53.67+00:00</td><td>sync_static_data_to_supabase_dry_run</td><td><span class="pill good">success</span></td><td>318 ms</td></tr><tr><td>2026-06-26T07:09:41.383+00:00</td><td>generate_daily_briefing</td><td><span class="pill good">success</span></td><td>1233 ms</td></tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Daily Briefing</h2>
+        <p><strong>AGP 운영 브리핑 2026-06-26</strong></p><pre>메인 손익 데이터는 2026-06-24까지 85행입니다.
+광고 카테고리 데이터는 2026-04-27까지 88행입니다.
+광고 채널 데이터는 2026-04-27까지 20행입니다.
+최근 자동화 실행 20건 중 성공 19건, 실패 0건입니다.
+승인 대기 작업은 0건입니다.</pre>
+      </section>
+      <section>
+        <h2>Pending Approvals</h2>
+        <p class="muted">No pending approvals.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

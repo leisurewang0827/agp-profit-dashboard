@@ -52,6 +52,7 @@ Invoke-Step "verify:supabase-data" @("npm.cmd", "run", "verify:supabase-data")
 Invoke-Step "build:from-supabase" @("npm.cmd", "run", "build:from-supabase")
 Invoke-Step "briefing:daily" @("npm.cmd", "run", "briefing:daily")
 Invoke-Step "obsidian:briefing" @("npm.cmd", "run", "obsidian:briefing")
+Invoke-Step "build:automation-status" @("npm.cmd", "run", "build:automation-status")
 Invoke-Step "check:automation" @("npm.cmd", "run", "check:automation")
 Invoke-Step "check:data" @("npm.cmd", "run", "check:data")
 

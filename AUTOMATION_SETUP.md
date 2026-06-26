@@ -90,12 +90,16 @@ Known referenced tables/views:
 - `npm.cmd run check:data`: reads committed static dashboard files and reports the latest data dates.
 - `npm.cmd run check:supabase`: verifies Supabase tables/views are reachable.
 - `npm.cmd run check:automation`: reads recent automation runs and pending approval requests.
+- `npm.cmd run check:api-readiness`: checks whether external API credentials are configured without printing secrets.
 - `npm.cmd run check:briefing`: reads today's AGP daily operations briefing.
+- `npm.cmd run approval:create -- --title "..." --action-type "..."`: creates a pending approval request for a future manual decision.
+- `npm.cmd run approval:update -- --id "<uuid>" --status cancelled`: updates an approval request status.
 - `npm.cmd run obsidian:briefing`: exports today's AGP daily briefing to the local Obsidian vault.
 - `npm.cmd run sync:supabase:dry-run`: previews static-data sync row counts.
 - `npm.cmd run sync:supabase`: upserts static dashboard data into Supabase.
 - `npm.cmd run verify:supabase-data`: verifies Supabase data counts and latest dates.
 - `npm.cmd run build:from-supabase`: rebuilds dashboard artifacts from Supabase.
+- `npm.cmd run build:automation-status`: builds `automation-status/index.html` from Supabase operations data.
 - `npm.cmd run briefing:daily`: writes an AGP daily operations briefing to `daily_briefings`.
 - `npm.cmd run refresh:daily`: runs the daily refresh sequence and writes a local log file under `logs/`.
 - `npm.cmd run check:all`: runs both checks.
