@@ -12,6 +12,7 @@
     "sync:supabase": "node scripts/sync-static-data-to-supabase.mjs",
     "sync:supabase:dry-run": "node scripts/sync-static-data-to-supabase.mjs --dry-run",
     "build:from-supabase": "node scripts/rebuild-dashboard-from-supabase.mjs",
+    "refresh:daily": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-daily-refresh.ps1",
     "check:all": "npm.cmd run check && npm.cmd run check:data",
     "serve": "python -m http.server 4173"
   }

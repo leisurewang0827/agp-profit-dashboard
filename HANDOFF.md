@@ -65,6 +65,14 @@ npm.cmd run build:from-supabase
 npm.cmd run check:automation
 ```
 
+Scheduled runner command:
+
+```powershell
+npm.cmd run refresh:daily
+```
+
+Local run logs are written under `logs/`, which is intentionally gitignored. The scheduled runner does not push to GitHub unless `scripts/run-daily-refresh.ps1` is called with `-AutoPublish`.
+
 ## Computer Split
 
 - Main computer: execution machine for scheduled checks, local `.env.local`, Chrome/session-based work, Supabase/API reads, dashboard rebuilds, and reviewed Git publishing.

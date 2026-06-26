@@ -94,6 +94,7 @@ Known referenced tables/views:
 - `npm.cmd run sync:supabase`: upserts static dashboard data into Supabase.
 - `npm.cmd run verify:supabase-data`: verifies Supabase data counts and latest dates.
 - `npm.cmd run build:from-supabase`: rebuilds dashboard artifacts from Supabase.
+- `npm.cmd run refresh:daily`: runs the daily refresh sequence and writes a local log file under `logs/`.
 - `npm.cmd run check:all`: runs both checks.
 
 Current known output:
