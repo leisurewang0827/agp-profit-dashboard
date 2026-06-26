@@ -63,6 +63,7 @@ npm.cmd run sync:supabase
 npm.cmd run verify:supabase-data
 npm.cmd run build:from-supabase
 npm.cmd run briefing:daily
+npm.cmd run obsidian:briefing
 npm.cmd run check:briefing
 npm.cmd run check:automation
 ```

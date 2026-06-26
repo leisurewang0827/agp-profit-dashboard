@@ -91,6 +91,7 @@ Known referenced tables/views:
 - `npm.cmd run check:supabase`: verifies Supabase tables/views are reachable.
 - `npm.cmd run check:automation`: reads recent automation runs and pending approval requests.
 - `npm.cmd run check:briefing`: reads today's AGP daily operations briefing.
+- `npm.cmd run obsidian:briefing`: exports today's AGP daily briefing to the local Obsidian vault.
 - `npm.cmd run sync:supabase:dry-run`: previews static-data sync row counts.
 - `npm.cmd run sync:supabase`: upserts static dashboard data into Supabase.
 - `npm.cmd run verify:supabase-data`: verifies Supabase data counts and latest dates.
