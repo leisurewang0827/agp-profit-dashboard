@@ -71,11 +71,11 @@ Known referenced tables/views:
 
 ## Next Technical Milestones
 
-1. Apply `supabase/migrations/001_init_agp_dashboard.sql` in Supabase SQL Editor.
-2. Confirm `.env.local` values exist without printing them.
-3. Run `npm.cmd run check:supabase` until the baseline tables/views return `OK`.
-4. Add or recover the data extraction script that queries Supabase/API sources.
-5. Rebuild `index.html` from current data for 2026-06-25.
+1. Run `npm.cmd run check:supabase` until the baseline tables/views return `OK`.
+2. Run `npm.cmd run sync:supabase:dry-run` to confirm planned row counts.
+3. Run `npm.cmd run sync:supabase` to upsert the current static dashboard data into Supabase.
+4. Run `npm.cmd run verify:supabase-data` to confirm row counts and latest dates.
+5. Run `npm.cmd run build:from-supabase` to rebuild the dashboard artifacts from Supabase.
 6. Validate dashboard rendering locally.
 7. Commit and push the generated artifact.
 8. Add a scheduled runner only after manual refresh succeeds twice.

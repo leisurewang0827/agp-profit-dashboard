@@ -7,6 +7,10 @@
     "check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-local-setup.ps1",
     "check:data": "node scripts/check-dashboard-data.mjs",
     "check:supabase": "node scripts/check-supabase.mjs",
+    "verify:supabase-data": "node scripts/verify-supabase-data.mjs",
+    "sync:supabase": "node scripts/sync-static-data-to-supabase.mjs",
+    "sync:supabase:dry-run": "node scripts/sync-static-data-to-supabase.mjs --dry-run",
+    "build:from-supabase": "node scripts/rebuild-dashboard-from-supabase.mjs",
     "check:all": "npm.cmd run check && npm.cmd run check:data",
     "serve": "python -m http.server 4173"
   }
