@@ -4,8 +4,6 @@
 
 create table if not exists public.mart_daily_profit_gauge_latest_closed (
   report_date date primary key,
-  month_key text generated always as (to_char(report_date, 'YYYY-MM')) stored,
-  day integer generated always as (extract(day from report_date)::integer) stored,
   revenue numeric not null default 0,
   self_revenue_api numeric not null default 0,
   naver_revenue_api numeric not null default 0,
@@ -23,7 +21,7 @@ create table if not exists public.mart_daily_profit_gauge_latest_closed (
 );
 
 create index if not exists idx_mart_daily_profit_month
-  on public.mart_daily_profit_gauge_latest_closed (month_key, report_date);
+  on public.mart_daily_profit_gauge_latest_closed (report_date);
 
 create table if not exists public.stg_ads_daily (
   report_date date not null,
@@ -153,4 +151,3 @@ create policy "service role full access ad profit daily"
   for all
   using (auth.role() = 'service_role')
   with check (auth.role() = 'service_role');
-
