@@ -90,10 +90,12 @@ Known referenced tables/views:
 - `npm.cmd run check:data`: reads committed static dashboard files and reports the latest data dates.
 - `npm.cmd run check:supabase`: verifies Supabase tables/views are reachable.
 - `npm.cmd run check:automation`: reads recent automation runs and pending approval requests.
+- `npm.cmd run check:briefing`: reads today's AGP daily operations briefing.
 - `npm.cmd run sync:supabase:dry-run`: previews static-data sync row counts.
 - `npm.cmd run sync:supabase`: upserts static dashboard data into Supabase.
 - `npm.cmd run verify:supabase-data`: verifies Supabase data counts and latest dates.
 - `npm.cmd run build:from-supabase`: rebuilds dashboard artifacts from Supabase.
+- `npm.cmd run briefing:daily`: writes an AGP daily operations briefing to `daily_briefings`.
 - `npm.cmd run refresh:daily`: runs the daily refresh sequence and writes a local log file under `logs/`.
 - `npm.cmd run check:all`: runs both checks.
 

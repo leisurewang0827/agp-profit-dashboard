@@ -50,6 +50,7 @@ Invoke-Step "sync:supabase:dry-run" @("npm.cmd", "run", "sync:supabase:dry-run")
 Invoke-Step "sync:supabase" @("npm.cmd", "run", "sync:supabase")
 Invoke-Step "verify:supabase-data" @("npm.cmd", "run", "verify:supabase-data")
 Invoke-Step "build:from-supabase" @("npm.cmd", "run", "build:from-supabase")
+Invoke-Step "briefing:daily" @("npm.cmd", "run", "briefing:daily")
 Invoke-Step "check:automation" @("npm.cmd", "run", "check:automation")
 Invoke-Step "check:data" @("npm.cmd", "run", "check:data")
 
