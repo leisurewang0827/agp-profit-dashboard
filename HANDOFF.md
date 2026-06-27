@@ -26,6 +26,8 @@
 - `scripts/rebuild-dashboard-from-supabase.mjs`: rebuilds dashboard artifacts from Supabase.
 - `scripts/automation-log.mjs`: shared Supabase-backed run logging helper.
 - `scripts/check-automation-runs.mjs`: reviews recent automation runs and pending approval requests.
+- `scripts/check-scheduler.ps1`: checks the Windows scheduled task result and latest daily refresh log completion.
+- `docs/external-api-credential-checklist.md`: maps remaining external service credentials to `.env.local` keys.
 - `package.json`: lightweight helper commands for local checks and static serving.
 
 ## Important Findings
@@ -76,6 +78,12 @@ npm.cmd run refresh:daily
 ```
 
 Local run logs are written under `logs/`, which is intentionally gitignored. The scheduled runner does not push to GitHub unless `scripts/run-daily-refresh.ps1` is called with `-AutoPublish`.
+
+Scheduler health check:
+
+```powershell
+npm.cmd run check:scheduler
+```
 
 ## Computer Split
 

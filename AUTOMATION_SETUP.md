@@ -5,11 +5,11 @@ This repository currently holds static dashboard artifacts and public Codex oper
 ## Current Completion
 
 - Local development tools: mostly ready.
-- User-owned GitHub repository handoff: pending remote creation under `leisurewang0827`.
+- User-owned GitHub repository handoff: ready under `leisurewang0827`.
 - Public setup/management pages: ready.
 - Main dashboard static artifact: ready through 2026-06-24.
-- Repeatable data refresh pipeline: not yet proven on this computer.
-- Secrets/API configuration: pending local `.env.local` setup.
+- Repeatable data refresh pipeline: ready on this computer.
+- Secrets/API configuration: Supabase and Obsidian ready; ad platform and commerce API credentials still pending.
 - Browser automation/login sessions: pending Chrome profile or connector confirmation.
 
 ## Local Computer Setup
@@ -28,6 +28,8 @@ npm.cmd run check:data
 ```
 
 PowerShell may block `npm`; use `npm.cmd` and `npx.cmd` on Windows.
+
+For ad platform and commerce credentials, follow `docs/external-api-credential-checklist.md`.
 
 ## Source Of Truth
 
@@ -82,7 +84,7 @@ Known referenced tables/views:
 6. Run `npm.cmd run check:automation` to review recent automation runs and pending approvals.
 7. Validate dashboard rendering locally.
 8. Commit and push the generated artifact.
-9. Add a scheduled runner only after manual refresh succeeds twice.
+9. Use `npm.cmd run check:scheduler` to verify the Windows scheduled runner.
 
 ## Current Local Verification Commands
 
@@ -90,6 +92,7 @@ Known referenced tables/views:
 - `npm.cmd run check:data`: reads committed static dashboard files and reports the latest data dates.
 - `npm.cmd run check:supabase`: verifies Supabase tables/views are reachable.
 - `npm.cmd run check:automation`: reads recent automation runs and pending approval requests.
+- `npm.cmd run check:scheduler`: checks the Windows scheduled task, latest result, next run, and newest refresh log completion.
 - `npm.cmd run check:api-readiness`: checks whether external API credentials are configured without printing secrets.
 - `npm.cmd run check:briefing`: reads today's AGP daily operations briefing.
 - `npm.cmd run approval:create -- --title "..." --action-type "..."`: creates a pending approval request for a future manual decision.
