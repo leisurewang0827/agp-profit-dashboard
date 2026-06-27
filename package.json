@@ -8,6 +8,7 @@
     "check:data": "node scripts/check-dashboard-data.mjs",
     "check:supabase": "node scripts/check-supabase.mjs",
     "check:automation": "node scripts/check-automation-runs.mjs",
+    "check:scheduler": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-scheduler.ps1",
     "check:api-readiness": "node scripts/check-api-readiness.mjs",
     "check:briefing": "node scripts/check-daily-briefing.mjs",
     "approval:create": "node scripts/create-approval-request.mjs",
