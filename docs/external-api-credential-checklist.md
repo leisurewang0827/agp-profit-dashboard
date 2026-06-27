@@ -1,6 +1,6 @@
-# External API credential checklist
+# Active channel credential checklist
 
-This checklist maps the remaining AGP automation credentials to the local `.env.local` keys. Do not commit real values. Fill them only in `.env.local` on the machine that runs the automation.
+This checklist reflects the user's current operation. Do not commit real values. Fill values only in `.env.local` on the computer that runs the automation.
 
 Run this after each update:
 
@@ -8,81 +8,59 @@ Run this after each update:
 npm.cmd run check:api-readiness
 ```
 
-## Current safe order
+## Current channel map
 
-1. Meta Ads read-only reporting
-2. GA4 and Google Ads
-3. Naver SearchAd
-4. Imweb
-5. Slack notifications, optional
+Active now:
 
-## Meta Ads read-only
+- Naver Place
+- Danggeun Ads
+- Instagram notices/promotions
 
-Official docs: https://developers.facebook.com/documentation/ads-commerce/marketing-api
+Not active now:
 
-Required keys:
+- Imweb
+- Meta Ads API
 
-- `META_ACCESS_TOKEN`
-- `META_AD_ACCOUNT_ID`
+Unknown or later:
 
-Optional key:
+- Google Ads
+- GA4
+- Naver SearchAd API, only if paid Naver ads need API reporting
 
-- `META_BUSINESS_ID`
+## Safe order from here
 
-Where to find them:
+1. Track Naver Place as the primary active local channel.
+2. Track Danggeun Ads through manual/admin report export first.
+3. Track Instagram notices/promotions manually because it is not connected to Meta Ads Manager.
+4. Only add Naver SearchAd API if the active Naver Place promotion is managed through Naver's ad platform and API reporting is needed.
+5. Keep Meta Ads API and Imweb inactive unless the operating method changes.
 
-- Access token: Meta for Developers app with Marketing API permissions. Use a token that can read ad insights for the target ad account.
-- Ad account ID: Meta Ads Manager. The account usually appears as `act_<number>` in tools and URLs. Store the value consistently with the connector code that will be added next.
-- Business ID: Meta Business settings, if the account is managed through Business Manager.
+## Naver Place
 
-Safety notes:
+Useful fields:
 
-- Start with read-only insights permissions.
-- Do not grant campaign edit or management permissions until reporting works.
-
-## Google Ads and GA4
-
-Google Ads API docs: https://developers.google.com/google-ads/api/docs/get-started/make-first-call
-Google Ads developer token docs: https://developers.google.com/google-ads/api/docs/api-policy/developer-token
-GA4 Data API docs: https://developers.google.com/analytics/devguides/reporting/data/v1
-GA4 property ID docs: https://developers.google.com/analytics/devguides/reporting/data/v1/property-id
-
-Required keys:
-
-- `GOOGLE_ADS_DEVELOPER_TOKEN`
-- `GOOGLE_ADS_CLIENT_ID`
-- `GOOGLE_ADS_CLIENT_SECRET`
-- `GOOGLE_ADS_REFRESH_TOKEN`
-- `GOOGLE_ADS_CUSTOMER_ID`
-- `GA4_PROPERTY_ID`
+- `NAVER_PLACE_BUSINESS_NAME`
+- `NAVER_PLACE_URL`
 
 Where to find them:
 
-- Developer token: Google Ads manager account API Center.
-- Client ID and client secret: Google Cloud OAuth client for the same Google account flow.
-- Refresh token: generated through OAuth consent for the Google Ads API scopes.
-- Customer ID: Google Ads account or manager account ID, usually shown in the account picker.
-- GA4 property ID: Google Analytics Admin property details. It is numeric and used as `properties/<GA4_PROPERTY_ID>` in API requests.
+- Naver SmartPlace / Place admin page.
+- Public Naver Place page URL for the business.
 
-Safety notes:
+Automation approach:
 
-- Use a read-only reporting OAuth scope first where possible.
-- Confirm whether the automation should pull Google Ads, GA4, or both before writing connector code.
+- Start with business profile, visit/review/reservation indicators, and manually exported or copied performance notes.
+- If paid Naver advertising is being used through Naver SearchAd, collect the SearchAd API keys separately.
 
-## Naver SearchAd
+## Naver SearchAd API, optional
 
 Official docs: https://naver.github.io/searchad-apidoc/
 
-Required keys:
+Required only if API reporting is enabled:
 
 - `NAVER_SEARCHAD_API_KEY`
 - `NAVER_SEARCHAD_SECRET_KEY`
 - `NAVER_SEARCHAD_CUSTOMER_ID`
-
-Optional keys:
-
-- `NAVER_COMMERCE_APPLICATION_ID`
-- `NAVER_COMMERCE_APPLICATION_SECRET`
 
 Where to find them:
 
@@ -91,50 +69,87 @@ Where to find them:
 
 Safety notes:
 
-- SearchAd reporting should be added before any bid, budget, or campaign mutation endpoint.
-- Keep commerce credentials separate from SearchAd credentials.
+- Reporting first.
+- Do not enable bid, budget, campaign, or keyword mutation endpoints without explicit approval.
 
-## Imweb
+## Danggeun Ads
 
-Official docs: https://developers-docs.imweb.me/
+Useful fields:
 
-Required keys:
-
-- `IMWEB_API_KEY`
-- `IMWEB_API_SECRET`
+- `DAANGN_BUSINESS_PROFILE_URL`
+- `DAANGN_REPORT_SOURCE=manual`
 
 Where to find them:
 
-- Imweb developer or partner/admin area for OpenAPI access.
-- Create or issue the API credentials for the target site/store.
+- Danggeun business profile or ads/admin screen.
+- Campaign screenshots, exported reports, or copied summary numbers if available.
+
+Automation approach:
+
+- Treat Danggeun as manual/admin export until a reliable official API or partner route is confirmed for this account.
+- Store daily spend, exposure, clicks, inquiries, reservations, and memo fields in a staging table or CSV first.
 
 Safety notes:
 
-- Start with order/product/customer read endpoints only.
-- Confirm the target Imweb site before enabling any write endpoint.
+- Do not change budgets or campaigns through automation.
+- Keep the first version as reporting only.
 
-## Slack notifications, optional
+## Instagram notices/promotions
 
-Required keys: none.
+Useful fields:
 
-Optional keys:
+- `INSTAGRAM_ACCOUNT_HANDLE`
+- `INSTAGRAM_REPORT_SOURCE=manual`
 
-- `SLACK_WEBHOOK_URL`
-- `SLACK_CHANNEL`
+Current boundary:
 
-Where to find them:
+- Instagram is being used for notices/promotions.
+- It is not currently connected to Meta Ads Manager for API reporting.
 
-- Slack app incoming webhook settings for the target workspace and channel.
+Automation approach:
 
-Safety notes:
+- Track posts, promotion dates, spend if any, reach, profile visits, messages, and reservation inquiries manually.
+- If the account is later connected to Meta Business / Ads Manager, reopen the Meta Ads API path then.
 
-- Keep Slack disabled until message contents are reviewed.
-- The current automation can run without Slack.
+## Meta Ads API, inactive
 
-## After credentials are ready
+Official docs: https://developers.facebook.com/documentation/ads-commerce/marketing-api
 
-1. Fill `.env.local`.
+Current boundary:
+
+- Do not treat Instagram notices/promotions as Meta Ads API work right now.
+- Leave these empty unless the operating method changes:
+  - `META_ACCESS_TOKEN`
+  - `META_AD_ACCOUNT_ID`
+  - `META_BUSINESS_ID`
+
+## Imweb, inactive
+
+Current boundary:
+
+- Imweb is not operated now.
+- Leave these empty:
+  - `IMWEB_API_KEY`
+  - `IMWEB_API_SECRET`
+
+## Google Ads / GA4, later if needed
+
+Google Ads API docs: https://developers.google.com/google-ads/api/docs/get-started/make-first-call
+GA4 Data API docs: https://developers.google.com/analytics/devguides/reporting/data/v1
+
+Leave these empty unless Google Ads or GA4 become part of the operation:
+
+- `GOOGLE_ADS_DEVELOPER_TOKEN`
+- `GOOGLE_ADS_CLIENT_ID`
+- `GOOGLE_ADS_CLIENT_SECRET`
+- `GOOGLE_ADS_REFRESH_TOKEN`
+- `GOOGLE_ADS_CUSTOMER_ID`
+- `GA4_PROPERTY_ID`
+
+## After channel details are ready
+
+1. Fill only the relevant `.env.local` values.
 2. Run `npm.cmd run check:api-readiness`.
-3. Add one read-only connector at a time.
-4. Write fetched raw rows to staging tables first.
+3. Add one reporting connector or manual import template at a time.
+4. Write fetched/imported raw rows to staging tables first.
 5. Compare dashboard output before enabling scheduled ingestion.

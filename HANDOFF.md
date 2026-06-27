@@ -13,7 +13,7 @@
 - `index.html`: main AGP net profit achievement dashboard.
 - `codex-agent-setup/index.html`: public setup checklist page for Codex agents.
 - `codex-agent-management/index.html`: public operating map for Codex agents.
-- `ad-profit-dashboard/index.html`: static ad profit dashboard for Meta, Naver SearchAd, and Google Ads.
+- `ad-profit-dashboard/index.html`: static ad profit dashboard artifact; active channels are being remapped to Naver Place, Danggeun Ads, and Instagram notices/promotions.
 - `ad-profit-dashboard/README.md`: notes that Supabase is the source of truth for ad dashboard data.
 
 ## Setup Added On This Computer

@@ -22,49 +22,84 @@ const env = loadEnv();
 const groups = [
   {
     name: "Supabase",
+    statusType: "active",
+    mode: "active",
     required: ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"],
     optional: ["SUPABASE_ANON_KEY", "SUPABASE_DB_URL"]
   },
   {
-    name: "Meta Ads read-only",
-    required: ["META_ACCESS_TOKEN", "META_AD_ACCOUNT_ID"],
-    optional: ["META_BUSINESS_ID"]
+    name: "Naver Place",
+    statusType: "active",
+    mode: "active manual/admin",
+    required: [],
+    optional: ["NAVER_PLACE_BUSINESS_NAME", "NAVER_PLACE_URL"]
+  },
+  {
+    name: "Naver SearchAd API",
+    statusType: "optional",
+    mode: "optional if paid Naver ads need API reporting",
+    required: [
+      "NAVER_SEARCHAD_API_KEY",
+      "NAVER_SEARCHAD_SECRET_KEY",
+      "NAVER_SEARCHAD_CUSTOMER_ID"
+    ],
+    optional: []
+  },
+  {
+    name: "Danggeun Ads",
+    statusType: "active",
+    mode: "active manual/admin",
+    required: [],
+    optional: ["DAANGN_BUSINESS_PROFILE_URL", "DAANGN_REPORT_SOURCE"]
+  },
+  {
+    name: "Instagram notices/promotions",
+    statusType: "active",
+    mode: "active manual, not connected to Meta Ads",
+    required: [],
+    optional: ["INSTAGRAM_ACCOUNT_HANDLE", "INSTAGRAM_REPORT_SOURCE"]
   },
   {
     name: "Google Ads / GA4",
-    required: [
+    statusType: "inactive",
+    mode: "inactive unless enabled later",
+    required: [],
+    optional: [
       "GOOGLE_ADS_DEVELOPER_TOKEN",
       "GOOGLE_ADS_CLIENT_ID",
       "GOOGLE_ADS_CLIENT_SECRET",
       "GOOGLE_ADS_REFRESH_TOKEN",
       "GOOGLE_ADS_CUSTOMER_ID",
       "GA4_PROPERTY_ID"
-    ],
-    optional: []
-  },
-  {
-    name: "Naver",
-    required: [
-      "NAVER_SEARCHAD_API_KEY",
-      "NAVER_SEARCHAD_SECRET_KEY",
-      "NAVER_SEARCHAD_CUSTOMER_ID"
-    ],
-    optional: ["NAVER_COMMERCE_APPLICATION_ID", "NAVER_COMMERCE_APPLICATION_SECRET"]
-  },
-  {
-    name: "Imweb",
-    required: ["IMWEB_API_KEY", "IMWEB_API_SECRET"],
-    optional: []
+    ]
   },
   {
     name: "Notifications",
+    statusType: "optional",
+    mode: "optional",
     required: [],
     optional: ["SLACK_WEBHOOK_URL", "SLACK_CHANNEL"]
   },
   {
     name: "Obsidian",
+    statusType: "active",
+    mode: "active",
     required: ["OBSIDIAN_VAULT_PATH"],
     optional: []
+  },
+  {
+    name: "Meta Ads API",
+    statusType: "inactive",
+    mode: "inactive, Instagram is not connected to Meta Ads",
+    required: [],
+    optional: ["META_ACCESS_TOKEN", "META_AD_ACCOUNT_ID", "META_BUSINESS_ID"]
+  },
+  {
+    name: "Imweb",
+    statusType: "inactive",
+    mode: "inactive",
+    required: [],
+    optional: ["IMWEB_API_KEY", "IMWEB_API_SECRET"]
   }
 ];
 
@@ -72,8 +107,11 @@ console.log("External API readiness check");
 for (const group of groups) {
   const missingRequired = group.required.filter(key => !configured(env, key));
   const missingOptional = group.optional.filter(key => !configured(env, key));
-  const status = missingRequired.length ? "NOT READY" : "READY";
+  let status = missingRequired.length ? "NOT READY" : "READY";
+  if (group.statusType === "optional" && missingRequired.length) status = "OPTIONAL NOT CONFIGURED";
+  if (group.statusType === "inactive") status = "INACTIVE";
   console.log(`- ${group.name}: ${status}`);
+  if (group.mode) console.log(`  - mode: ${group.mode}`);
   if (missingRequired.length) console.log(`  - missing required: ${missingRequired.join(", ")}`);
   if (missingOptional.length) console.log(`  - missing optional: ${missingOptional.join(", ")}`);
 }

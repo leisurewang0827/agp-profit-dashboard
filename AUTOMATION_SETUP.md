@@ -9,7 +9,7 @@ This repository currently holds static dashboard artifacts and public Codex oper
 - Public setup/management pages: ready.
 - Main dashboard static artifact: ready through 2026-06-24.
 - Repeatable data refresh pipeline: ready on this computer.
-- Secrets/API configuration: Supabase and Obsidian ready; ad platform and commerce API credentials still pending.
+- Secrets/API configuration: Supabase and Obsidian ready; Naver Place, Danggeun Ads, and Instagram are tracked as active manual/admin channels.
 - Browser automation/login sessions: pending Chrome profile or connector confirmation.
 
 ## Local Computer Setup
@@ -29,7 +29,7 @@ npm.cmd run check:data
 
 PowerShell may block `npm`; use `npm.cmd` and `npx.cmd` on Windows.
 
-For ad platform and commerce credentials, follow `docs/external-api-credential-checklist.md`.
+For active channel credentials and manual reporting boundaries, follow `docs/external-api-credential-checklist.md`.
 
 ## Source Of Truth
 
