@@ -117,6 +117,53 @@ function updateMetrics() {
   document.querySelector("#metric-revenue").textContent = fmtWon(summary.revenue);
 }
 
+function validateRows() {
+  const issues = [];
+  for (const row of rows) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(row.report_date || "")) {
+      issues.push(`${channels[row.channel] || row.channel}: 날짜가 비어 있습니다.`);
+    }
+    if (!row.campaign_name) {
+      issues.push(`${channels[row.channel] || row.channel}: 캠페인명이 비어 있습니다.`);
+    }
+    for (const field of numberFields) {
+      if (numberValue(row[field]) < 0) {
+        issues.push(`${channels[row.channel] || row.channel}: ${field} 값은 0 이상이어야 합니다.`);
+      }
+    }
+  }
+  return issues;
+}
+
+function updateValidation() {
+  const statusEl = document.querySelector("#validation-status");
+  const detailEl = document.querySelector("#validation-detail");
+  const commandEl = document.querySelector("#import-command");
+  const issues = validateRows();
+  const rowCount = rows.length;
+
+  if (!rowCount) {
+    statusEl.textContent = "입력 필요";
+    detailEl.textContent = "행을 추가한 뒤 저장할 수 있습니다.";
+    commandEl.textContent = "npm.cmd run manual:channels:dry-run -- --file=data/my-report.csv";
+    statusEl.dataset.state = "warn";
+    return;
+  }
+
+  if (issues.length) {
+    statusEl.textContent = `확인 필요 ${issues.length}개`;
+    detailEl.textContent = issues.slice(0, 2).join(" ");
+    commandEl.textContent = "CSV 저장 전 입력값을 먼저 확인하세요.";
+    statusEl.dataset.state = "bad";
+    return;
+  }
+
+  statusEl.textContent = "CSV 저장 가능";
+  detailEl.textContent = `${rowCount}개 행이 import 형식에 맞습니다. 저장한 CSV는 dry-run으로 한 번 더 확인하세요.`;
+  commandEl.textContent = "npm.cmd run manual:channels:dry-run -- --file=data/my-report.csv";
+  statusEl.dataset.state = "good";
+}
+
 function render() {
   channelTitle.textContent = channels[selectedChannel];
   document.querySelectorAll(".channel-button").forEach(button => {
@@ -137,6 +184,7 @@ function render() {
 
   updateCounts();
   updateMetrics();
+  updateValidation();
 }
 
 function updateRow(rowId, field, value) {
@@ -146,6 +194,7 @@ function updateRow(rowId, field, value) {
   saveRows();
   updateCounts();
   updateMetrics();
+  updateValidation();
 }
 
 function csvEscape(value) {
