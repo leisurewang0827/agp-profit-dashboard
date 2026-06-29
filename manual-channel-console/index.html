@@ -45,6 +45,7 @@
         <div class="topbar-actions">
           <label class="file-button" for="csv-file">CSV 불러오기</label>
           <input id="csv-file" type="file" accept=".csv,text/csv">
+          <button class="file-button" id="preview-csv" type="button">CSV Preview</button>
           <button class="primary-button" id="download-csv" type="button">CSV 저장</button>
         </div>
       </header>
@@ -74,6 +75,20 @@
           <p id="validation-detail">채널별 성과를 입력하거나 CSV를 불러오세요.</p>
         </div>
         <code id="import-command">npm.cmd run manual:channels:dry-run -- --file=data/my-report.csv</code>
+      </section>
+
+      <section class="preview-panel" id="preview-panel" aria-label="CSV preview" hidden>
+        <div class="preview-head">
+          <div>
+            <strong>CSV Preview</strong>
+            <p>Save this text as a CSV file, or use the CSV save button.</p>
+          </div>
+          <div class="preview-actions">
+            <button class="file-button" id="copy-csv" type="button">Copy CSV</button>
+            <button class="file-button" id="copy-command" type="button">Copy Command</button>
+          </div>
+        </div>
+        <textarea id="csv-preview" spellcheck="false"></textarea>
       </section>
 
       <section class="editor-panel" aria-label="입력 테이블">

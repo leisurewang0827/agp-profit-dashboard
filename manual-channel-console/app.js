@@ -40,6 +40,8 @@ const rowsEl = document.querySelector("#rows");
 const rowTemplate = document.querySelector("#row-template");
 const channelTitle = document.querySelector("#channel-title");
 const csvFile = document.querySelector("#csv-file");
+const previewPanel = document.querySelector("#preview-panel");
+const csvPreview = document.querySelector("#csv-preview");
 
 function defaultRows() {
   return [
@@ -185,6 +187,7 @@ function render() {
   updateCounts();
   updateMetrics();
   updateValidation();
+  updatePreview();
 }
 
 function updateRow(rowId, field, value) {
@@ -195,6 +198,7 @@ function updateRow(rowId, field, value) {
   updateCounts();
   updateMetrics();
   updateValidation();
+  updatePreview();
 }
 
 function csvEscape(value) {
@@ -208,6 +212,30 @@ function rowsToCsv(items) {
     lines.push(fields.map(field => csvEscape(row[field] ?? "")).join(","));
   }
   return `${lines.join("\n")}\n`;
+}
+
+function importCommand(fileName = "data/my-report.csv") {
+  return `npm.cmd run manual:channels:dry-run -- --file=${fileName}`;
+}
+
+function updatePreview() {
+  if (!csvPreview) return;
+  csvPreview.value = rowsToCsv(rows);
+}
+
+async function copyText(text, label = "Copied") {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    textArea.remove();
+  }
+  const detailEl = document.querySelector("#validation-detail");
+  if (detailEl) detailEl.textContent = label;
 }
 
 function downloadCsv() {
@@ -298,6 +326,20 @@ document.querySelector("#reset-demo").addEventListener("click", () => {
 });
 
 document.querySelector("#download-csv").addEventListener("click", downloadCsv);
+
+document.querySelector("#preview-csv").addEventListener("click", () => {
+  updatePreview();
+  previewPanel.hidden = !previewPanel.hidden;
+});
+
+document.querySelector("#copy-csv").addEventListener("click", async () => {
+  updatePreview();
+  await copyText(csvPreview.value, "CSV copied. Save it as data/my-report.csv before running dry-run.");
+});
+
+document.querySelector("#copy-command").addEventListener("click", async () => {
+  await copyText(importCommand(), "Dry-run command copied.");
+});
 
 rowsEl.addEventListener("input", event => {
   const input = event.target.closest("input[data-field]");

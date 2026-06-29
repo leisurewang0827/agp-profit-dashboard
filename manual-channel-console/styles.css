@@ -291,6 +291,55 @@ button {
   white-space: nowrap;
 }
 
+.preview-panel {
+  margin-bottom: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.preview-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.preview-head strong {
+  font-size: 16px;
+}
+
+.preview-head p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.preview-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+#csv-preview {
+  display: block;
+  width: 100%;
+  min-height: 210px;
+  padding: 14px 16px;
+  border: 0;
+  resize: vertical;
+  color: #dce7f3;
+  background: #111827;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
 .editor-panel {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -391,6 +440,19 @@ input:focus {
 
   .status-panel code {
     max-width: 100%;
+  }
+
+  .preview-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .preview-actions {
+    justify-content: stretch;
+  }
+
+  .preview-actions .file-button {
+    flex: 1;
   }
 }
 
