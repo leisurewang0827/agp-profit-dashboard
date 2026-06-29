@@ -8,9 +8,20 @@ Use this workflow for the active channels that are not API-connected yet:
 
 ## Files
 
+- Web console: `manual-channel-console/index.html`
 - Template: `data/manual-channel-template.csv`
 - Import script: `scripts/import-manual-channel-report.mjs`
 - Supabase migration: `supabase/migrations/004_active_manual_channels.sql`
+
+## Web console
+
+Open the local input console:
+
+```powershell
+npm.cmd run open:manual-console
+```
+
+The console stores draft rows in the browser on this computer and exports a CSV compatible with the import script.
 
 ## Channel codes
 

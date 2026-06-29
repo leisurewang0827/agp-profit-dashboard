@@ -12,6 +12,7 @@
     "check:api-readiness": "node scripts/check-api-readiness.mjs",
     "check:briefing": "node scripts/check-daily-briefing.mjs",
     "check:manual-channels": "node scripts/check-manual-channel-data.mjs",
+    "open:manual-console": "powershell -NoProfile -Command Start-Process (Resolve-Path 'manual-channel-console/index.html')",
     "manual:channels:dry-run": "node scripts/import-manual-channel-report.mjs",
     "manual:channels:import": "node scripts/import-manual-channel-report.mjs --write",
     "approval:create": "node scripts/create-approval-request.mjs",

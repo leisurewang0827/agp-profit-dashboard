@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AGP Channel Console</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar" aria-label="채널">
+      <div class="brand">
+        <span class="brand-mark">AGP</span>
+        <div>
+          <h1>채널 콘솔</h1>
+          <p>네이버플레이스 · 당근 · 인스타</p>
+        </div>
+      </div>
+      <nav class="channel-list" aria-label="채널 선택">
+        <button class="channel-button active" data-channel="naver_place" type="button">
+          <span>네이버플레이스</span>
+          <strong id="naver_place-count">0</strong>
+        </button>
+        <button class="channel-button" data-channel="daangn_ads" type="button">
+          <span>당근광고</span>
+          <strong id="daangn_ads-count">0</strong>
+        </button>
+        <button class="channel-button" data-channel="instagram_notice" type="button">
+          <span>인스타 공고</span>
+          <strong id="instagram_notice-count">0</strong>
+        </button>
+      </nav>
+      <div class="sidebar-actions">
+        <button class="ghost-button" id="add-row" type="button">+ 행 추가</button>
+        <button class="ghost-button" id="reset-demo" type="button">초기화</button>
+      </div>
+    </aside>
+
+    <section class="workspace" aria-label="성과 입력">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Manual Channel Report</p>
+          <h2 id="channel-title">네이버플레이스</h2>
+        </div>
+        <div class="topbar-actions">
+          <label class="file-button" for="csv-file">CSV 불러오기</label>
+          <input id="csv-file" type="file" accept=".csv,text/csv">
+          <button class="primary-button" id="download-csv" type="button">CSV 저장</button>
+        </div>
+      </header>
+
+      <section class="metrics" aria-label="요약">
+        <div class="metric">
+          <span>광고비</span>
+          <strong id="metric-spend">0원</strong>
+        </div>
+        <div class="metric">
+          <span>문의</span>
+          <strong id="metric-inquiries">0</strong>
+        </div>
+        <div class="metric">
+          <span>예약</span>
+          <strong id="metric-reservations">0</strong>
+        </div>
+        <div class="metric">
+          <span>매출</span>
+          <strong id="metric-revenue">0원</strong>
+        </div>
+      </section>
+
+      <section class="editor-panel" aria-label="입력 테이블">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>날짜</th>
+                <th>캠페인</th>
+                <th>광고비</th>
+                <th>노출</th>
+                <th>클릭</th>
+                <th>문의</th>
+                <th>예약</th>
+                <th>매출</th>
+                <th>프로필</th>
+                <th>메시지</th>
+                <th>메모</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <template id="row-template">
+    <tr>
+      <td><input data-field="report_date" type="date"></td>
+      <td><input data-field="campaign_name" type="text" placeholder="daily"></td>
+      <td><input data-field="spend" type="number" min="0" step="1"></td>
+      <td><input data-field="impressions" type="number" min="0" step="1"></td>
+      <td><input data-field="clicks" type="number" min="0" step="1"></td>
+      <td><input data-field="inquiries" type="number" min="0" step="1"></td>
+      <td><input data-field="reservations" type="number" min="0" step="1"></td>
+      <td><input data-field="revenue" type="number" min="0" step="1"></td>
+      <td><input data-field="profile_visits" type="number" min="0" step="1"></td>
+      <td><input data-field="messages" type="number" min="0" step="1"></td>
+      <td><input data-field="notes" type="text"></td>
+      <td><button class="icon-button" data-action="delete" type="button" aria-label="삭제">×</button></td>
+    </tr>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>

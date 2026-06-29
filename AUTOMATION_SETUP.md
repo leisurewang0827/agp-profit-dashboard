@@ -31,6 +31,7 @@ PowerShell may block `npm`; use `npm.cmd` and `npx.cmd` on Windows.
 
 For active channel credentials and manual reporting boundaries, follow `docs/external-api-credential-checklist.md`.
 For manual Naver Place, Danggeun Ads, and Instagram reporting imports, follow `docs/manual-channel-reporting.md`.
+For the local web input console, open `manual-channel-console/index.html`.
 
 ## Source Of Truth
 
@@ -96,6 +97,7 @@ Known referenced tables/views:
 - `npm.cmd run check:scheduler`: checks the Windows scheduled task, latest result, next run, and newest refresh log completion.
 - `npm.cmd run check:api-readiness`: checks whether external API credentials are configured without printing secrets.
 - `npm.cmd run check:briefing`: reads today's AGP daily operations briefing.
+- `npm.cmd run open:manual-console`: opens the local Naver Place, Danggeun, and Instagram input console.
 - `npm.cmd run manual:channels:dry-run`: validates a Naver Place, Danggeun, and Instagram manual report CSV without writing to Supabase.
 - `npm.cmd run manual:channels:import`: imports a manual report CSV after migration 004 is applied.
 - `npm.cmd run approval:create -- --title "..." --action-type "..."`: creates a pending approval request for a future manual decision.
