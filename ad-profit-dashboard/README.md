@@ -12,6 +12,12 @@ Public-safe data files:
 - `data/ad_profit_dashboard_data.json`
 - `data/deposit_reconciliation_dashboard_data.json`
 
+Local checks:
+
+```powershell
+npm.cmd run check:deposit-dashboard
+```
+
 Source of truth:
 - `public.meta_ad_profit_daily_summary`
 - `public.meta_ad_profit_creative_daily`

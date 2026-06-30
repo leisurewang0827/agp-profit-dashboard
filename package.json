@@ -12,6 +12,7 @@
     "check:api-readiness": "node scripts/check-api-readiness.mjs",
     "check:briefing": "node scripts/check-daily-briefing.mjs",
     "check:manual-channels": "node scripts/check-manual-channel-data.mjs",
+    "check:deposit-dashboard": "node scripts/check-deposit-dashboard.mjs",
     "open:manual-console": "powershell -NoProfile -Command Start-Process (Resolve-Path 'manual-channel-console/index.html')",
     "manual:channels:dry-run": "node scripts/import-manual-channel-report.mjs",
     "manual:channels:import": "node scripts/import-manual-channel-report.mjs --write",
@@ -25,7 +26,7 @@
     "sync:supabase:dry-run": "node scripts/sync-static-data-to-supabase.mjs --dry-run",
     "build:from-supabase": "node scripts/rebuild-dashboard-from-supabase.mjs",
     "refresh:daily": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-daily-refresh.ps1",
-    "check:all": "npm.cmd run check && npm.cmd run check:data",
+    "check:all": "npm.cmd run check && npm.cmd run check:data && npm.cmd run check:deposit-dashboard",
     "serve": "python -m http.server 4173"
   }
 }
