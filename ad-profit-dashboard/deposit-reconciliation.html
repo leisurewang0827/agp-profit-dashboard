@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>입금확인 정산 대시보드</title>
+  <style>
+    :root {
+      --bg: #f4f6f3;
+      --panel: #fff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #dfe5dc;
+      --brand: #1f5c43;
+      --good: #216e39;
+      --bad: #b42318;
+      --warn: #a15c07;
+      --radius: 8px;
+      --shadow: 0 8px 24px rgba(20,31,24,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    .page { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .nav-link { color: var(--brand); font-size: 14px; font-weight: 800; text-decoration: none; }
+    .hero { margin-bottom: 20px; }
+    .eyebrow { color: var(--brand); font-size: 13px; font-weight: 900; margin-bottom: 8px; }
+    h1 { margin: 0; font-size: 34px; line-height: 1.15; }
+    .sub {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+      max-width: 880px;
+    }
+    .summary-grid, .channel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .channel-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat, .panel, .channel-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .stat { padding: 16px; min-width: 0; }
+    .stat span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; margin-bottom: 8px; }
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+    .panel { padding: 18px; margin-bottom: 18px; }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    h2 { margin: 0; font-size: 22px; }
+    .meta { color: var(--muted); font-size: 12px; text-align: right; }
+    .channel-card { padding: 15px; }
+    .channel-card h3 { margin: 0 0 8px; font-size: 17px; }
+    .amount { font-size: 24px; font-weight: 900; font-variant-numeric: tabular-nums; }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 9px;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .good { color: var(--good); }
+    .bad { color: var(--bad); }
+    .warn { color: var(--warn); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    th, td { padding: 11px 10px; border-top: 1px solid var(--line); font-size: 13px; text-align: left; }
+    th { background: var(--brand); color: #fff; border-top: 0; white-space: nowrap; }
+    .number { text-align: right; font-variant-numeric: tabular-nums; }
+    .footer { color: var(--muted); font-size: 12px; line-height: 1.5; margin-top: 18px; }
+    @media (max-width: 980px) {
+      .summary-grid, .channel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .page { padding: 16px; }
+      .topbar, .panel-head { align-items: flex-start; flex-direction: column; }
+      .summary-grid, .channel-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 28px; }
+      table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="nav-link" href="./index.html">광고 수익분석</a>
+      <div class="meta" id="generated-at">데이터 불러오는 중</div>
+    </div>
+    <section class="hero">
+      <div class="eyebrow">Tennis Clubhouse · Deposit Reconciliation</div>
+      <h1>입금확인과 정산 채널을 한 화면에서 점검</h1>
+      <p class="sub">우리은행 법인통장, 카카오뱅크 개인통장, 토스 단말기, 라켓타임, 네이버플레이스, 당근광고를 월별·채널별 집계로만 표시합니다. 원본 거래 행, 계좌번호, 회원 식별 정보는 이 화면에 포함하지 않습니다.</p>
+    </section>
+    <section class="summary-grid" id="summary-grid"></section>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>채널 요약</h2>
+        <div class="meta">공개 가능 집계 전용</div>
+      </div>
+      <div class="channel-grid" id="channel-grid"></div>
+    </section>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>월별·채널별 상세</h2>
+        <div class="meta">회원 단위 정보 제외</div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>월</th>
+            <th>채널</th>
+            <th>원본 구분</th>
+            <th class="number">건수</th>
+            <th class="number">수입</th>
+            <th class="number">지출</th>
+            <th class="number">순액</th>
+            <th class="number">검토 필요</th>
+          </tr>
+        </thead>
+        <tbody id="detail-rows"></tbody>
+      </table>
+    </section>
+    <p class="footer">이 화면은 `app-automation-vault`에서 공개 가능 집계로 다시 만든 JSON만 사용합니다. 실제 원본 CSV와 회원 단위 확인은 비공개 저장소에서만 처리합니다.</p>
+  </main>
+  <script>
+    const fmtWon = (value) => `₩${Number(value || 0).toLocaleString('ko-KR')}`;
+    const fmtInt = (value) => Number(value || 0).toLocaleString('ko-KR');
+    const signClass = (value) => Number(value || 0) < 0 ? 'bad' : 'good';
+    function stat(label, value, className = '') {
+      return `<article class="stat"><span>${label}</span><strong class="${className}">${value}</strong></article>`;
+    }
+    function render(data) {
+      const summary = data.summary || {};
+      const channels = data.channels || [];
+      document.getElementById('generated-at').textContent = data.generated_at ? `생성: ${data.generated_at}` : '생성 시간 없음';
+      document.getElementById('summary-grid').innerHTML = [
+        stat('수입 합계', fmtWon(summary.income_total), 'good'),
+        stat('지출 합계', fmtWon(summary.expense_total), 'bad'),
+        stat('순액', fmtWon(summary.net_total), signClass(summary.net_total)),
+        stat('검토 필요', `${fmtInt(summary.review_needed_total)}건`, summary.review_needed_total ? 'warn' : 'good'),
+      ].join('');
+      document.getElementById('channel-grid').innerHTML = channels.map((row) => `
+        <article class="channel-card">
+          <h3>${row.channel_label || row.channel}</h3>
+          <div class="amount ${signClass(row.net_amount)}">${fmtWon(row.net_amount)}</div>
+          <div class="card-row"><span>수입</span><strong class="good">${fmtWon(row.income_amount)}</strong></div>
+          <div class="card-row"><span>지출</span><strong class="bad">${fmtWon(row.expense_amount)}</strong></div>
+          <div class="card-row"><span>검토 필요</span><strong class="${row.review_needed_count ? 'warn' : 'good'}">${fmtInt(row.review_needed_count)}건</strong></div>
+        </article>
+      `).join('');
+      document.getElementById('detail-rows').innerHTML = channels.map((row) => `
+        <tr>
+          <td>${row.month}</td>
+          <td>${row.channel_label || row.channel}</td>
+          <td>${row.source_system}</td>
+          <td class="number">${fmtInt(row.row_count)}</td>
+          <td class="number good">${fmtWon(row.income_amount)}</td>
+          <td class="number bad">${fmtWon(row.expense_amount)}</td>
+          <td class="number ${signClass(row.net_amount)}">${fmtWon(row.net_amount)}</td>
+          <td class="number ${row.review_needed_count ? 'warn' : 'good'}">${fmtInt(row.review_needed_count)}</td>
+        </tr>
+      `).join('');
+    }
+    fetch('./data/deposit_reconciliation_dashboard_data.json')
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(render)
+      .catch((error) => {
+        document.getElementById('generated-at').textContent = `데이터 로드 실패: ${error.message}`;
+      });
+  </script>
+</body>
+</html>

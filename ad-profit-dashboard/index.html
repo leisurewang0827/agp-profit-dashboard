@@ -107,6 +107,20 @@
       cursor: pointer;
       margin-top: 20px;
     }
+    .view-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 14px;
+      margin-top: 20px;
+      color: var(--brand);
+      background: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
     .channel-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -355,6 +369,7 @@
           <input id="until-input" type="date">
         </label>
         <button id="reset-range">최신 MTD로 되돌리기</button>
+        <a class="view-link" href="./deposit-reconciliation.html">입금확인 정산 보기</a>
       </div>
     </section>
 

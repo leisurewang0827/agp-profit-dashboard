@@ -1,0 +1,110 @@
+{
+  "notice": "Public-safe deposit reconciliation dashboard data. Aggregated synthetic/sample data only.",
+  "generated_at": "2026-06-30T08:21:52.831542+00:00",
+  "business_context": {
+    "business": "Tennis Clubhouse",
+    "automation_focus": "deposit reconciliation and settlement channel review",
+    "meta_ads_required": false,
+    "private_source_repository": "app-automation-vault"
+  },
+  "summary": {
+    "aggregate_rows": 7,
+    "income_total": 1006000,
+    "expense_total": 60000,
+    "net_total": 946000,
+    "review_needed_total": 5
+  },
+  "channels": [
+    {
+      "month": "2026-06",
+      "channel": "ad_cost",
+      "channel_label": "Local ad spend",
+      "source_system": "danggeun_ads_raw_csv",
+      "account_type": "woori_business_bank",
+      "cash_flow_type": "expense",
+      "row_count": 1,
+      "income_amount": 0,
+      "expense_amount": 30000,
+      "net_amount": -30000,
+      "review_needed_count": 1
+    },
+    {
+      "month": "2026-06",
+      "channel": "ad_cost",
+      "channel_label": "Local ad spend",
+      "source_system": "woori_business_bank_raw_csv",
+      "account_type": "woori_business_bank",
+      "cash_flow_type": "expense",
+      "row_count": 1,
+      "income_amount": 0,
+      "expense_amount": 30000,
+      "net_amount": -30000,
+      "review_needed_count": 1
+    },
+    {
+      "month": "2026-06",
+      "channel": "lesson",
+      "channel_label": "Lesson payments",
+      "source_system": "kakaobank_personal_raw_csv",
+      "account_type": "kakaobank_personal",
+      "cash_flow_type": "income",
+      "row_count": 1,
+      "income_amount": 400000,
+      "expense_amount": 0,
+      "net_amount": 400000,
+      "review_needed_count": 1
+    },
+    {
+      "month": "2026-06",
+      "channel": "lesson",
+      "channel_label": "Lesson payments",
+      "source_system": "woori_business_bank_raw_csv",
+      "account_type": "woori_business_bank",
+      "cash_flow_type": "income",
+      "row_count": 1,
+      "income_amount": 440000,
+      "expense_amount": 0,
+      "net_amount": 440000,
+      "review_needed_count": 0
+    },
+    {
+      "month": "2026-06",
+      "channel": "naver_place",
+      "channel_label": "Naver Place settlement",
+      "source_system": "naver_place_raw_csv",
+      "account_type": "naver_place_settlement",
+      "cash_flow_type": "income",
+      "row_count": 1,
+      "income_amount": 66000,
+      "expense_amount": 0,
+      "net_amount": 66000,
+      "review_needed_count": 1
+    },
+    {
+      "month": "2026-06",
+      "channel": "rackettime",
+      "channel_label": "RacketTime settlement",
+      "source_system": "rackettime_raw_csv",
+      "account_type": "rackettime_settlement",
+      "cash_flow_type": "income",
+      "row_count": 1,
+      "income_amount": 88000,
+      "expense_amount": 0,
+      "net_amount": 88000,
+      "review_needed_count": 1
+    },
+    {
+      "month": "2026-06",
+      "channel": "store",
+      "channel_label": "Store and onsite sales",
+      "source_system": "toss_terminal_raw_csv",
+      "account_type": "toss_terminal",
+      "cash_flow_type": "income",
+      "row_count": 2,
+      "income_amount": 12000,
+      "expense_amount": 0,
+      "net_amount": 12000,
+      "review_needed_count": 0
+    }
+  ]
+}
