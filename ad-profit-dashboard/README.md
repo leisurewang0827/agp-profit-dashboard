@@ -18,6 +18,8 @@ Local checks:
 npm.cmd run check:deposit-dashboard
 ```
 
+GitHub Actions also runs the dashboard data checks on push and pull request.
+
 Source of truth:
 - `public.meta_ad_profit_daily_summary`
 - `public.meta_ad_profit_creative_daily`

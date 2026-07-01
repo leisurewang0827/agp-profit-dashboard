@@ -1,0 +1,27 @@
+name: Check Dashboard
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Check dashboard data
+        run: npm run check:data
+
+      - name: Check deposit reconciliation dashboard
+        run: npm run check:deposit-dashboard
